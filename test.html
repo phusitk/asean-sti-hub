@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ASEAN STI Opportunities Platform — Mockup</title>
+  <style>
+    :root{
+      --blue:#0032A0; --red:#EF3340; --yellow:#F8E600;
+      --bg:#F6F7FB; --text:#0F172A; --muted:#475569; --card:#FFFFFF; --border:#E2E8F0;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,"Helvetica Neue",Arial,"Apple Color Emoji","Segoe UI Emoji";color:var(--text);background:var(--bg)}
+    a{color:inherit}
+    /* Layout */
+    .container{max-width:1120px;margin:0 auto;padding:0 16px}
+    header{position:sticky;top:0;z-index:20;background:var(--blue);color:#fff;border-bottom:1px solid rgba(255,255,255,.15)}
+    header .bar{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    nav a{opacity:.9;text-decoration:none;margin-left:24px}
+    nav a:hover{color:var(--yellow)}
+    .hero{padding:24px 0}
+    .hero h1{font-size:clamp(1.25rem,2.5vw,1.75rem);margin:0 0 8px;font-weight:600}
+    .hero p{margin:0;color:var(--muted)}
+    /* Filters */
+    .filters{display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px}
+    @media(min-width:768px){.filters{grid-template-columns:5fr 3fr 2fr 2fr}}
+    .input,.select{border:1px solid var(--border);background:#fff;border-radius:12px;padding:10px 12px;font-size:14px;width:100%}
+    /* Results bar */
+    .resultsbar{display:flex;align-items:center;justify-content:space-between;margin:12px 0 16px;color:var(--muted);font-size:14px}
+    /* Grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+    .card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+    .card h3{margin:0;font-weight:600;line-height:1.25;max-height:3.2em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
+    .row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+    /* Badges */
+    .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;color:#1e293b}
+    .badge{border:1px solid var(--blue);color:var(--blue);font-size:12px;border-radius:999px;padding:2px 8px;max-width:100%}
+    .badge > span{display:inline-block;max-width:12rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
+    .status{border-color:var(--blue);color:var(--blue)}
+    .status.status--warn{border-color:var(--yellow);color:#b98f00}
+    .status.status--closed{border-color:#fca5a5;color:#b91c1c}
+    .meta{margin-top:10px;color:#334155;font-size:13px}
+    .actions{margin-top:12px;display:flex;align-items:center;justify-content:space-between;font-size:13px}
+    .btn{border-radius:12px;border:1px solid var(--blue);padding:8px 12px;background:#fff;color:var(--blue);text-decoration:none}
+    .btn:hover{background:#eff6ff}
+    .btn.primary{background:var(--red);border-color:var(--red);color:#fff}
+    .btn.primary:hover{filter:brightness(.95)}
+    /* Footer */
+    footer{margin-top:24px;background:var(--blue);color:#fff}
+    footer .inner{display:grid;gap:24px;padding:24px 0}
+    @media(min-width:768px){footer .inner{grid-template-columns:1fr 1fr 1fr}}
+    footer .muted{color:#dbeafe}
+    .footbar{border-top:1px solid rgba(255,255,255,.25);font-size:12px;color:#cbd5e1;padding:12px 0}
+    /* Modal */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:flex-end;justify-content:center;padding:16px}
+    @media(min-width:768px){.overlay{align-items:center}}
+    .modal{background:#fff;border-radius:16px;max-width:720px;width:100%;max-height:80vh;overflow:auto;border:1px solid var(--border);padding:16px}
+    .overlay.show{display:flex}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container bar">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--yellow);border:4px solid var(--red)"></div>
+        <strong>ASEAN STI Opportunities</strong>
+      </div>
+      <nav>
+        <a href="#browse">Browse</a>
+        <a href="#submit">Submit</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="container hero">
+      <h1>Regional hub for Science, Technology &amp; Innovation opportunities</h1>
+      <p>Search grants, exchanges, trainings, and competitions across ASEAN platforms — then apply on the official source.</p>
+      <div class="filters">
+        <input id="q" class="input" placeholder="Search opportunity title…" />
+        <select id="country" class="select"></select>
+        <select id="type" class="select"></select>
+        <select id="window" class="select"></select>
+      </div>
+    </section>
+
+    <section id="browse" class="container">
+      <div class="resultsbar">
+        <div>Results: <span id="count"><!-- filled by JS --></span></div>
+        <div>Last updated: 4 Sep 2025</div>
+      </div>
+      <div id="grid" class="grid"></div>
+    </section>
+
+    <section id="submit" class="container" style="background:#fff;border-top:1px solid var(--border);margin-top:28px;padding:24px;border-radius:16px">
+      <h2 style="margin:0 0 6px;font-size:20px;font-weight:600">Submit a new opportunity</h2>
+      <p class="muted" style="margin:0 0 12px;color:var(--muted)">If you run an STI grant, exchange, or event in ASEAN, share a short summary and link. Our editors will review and publish.</p>
+      <div style="display:grid;grid-template-columns:1fr;gap:10px">
+        <input class="input" placeholder="Opportunity title" />
+        <input class="input" placeholder="Official source URL" />
+        <input class="input" placeholder="Country/Coverage (e.g., ASEAN-wide)" />
+        <select class="select">
+          <option>Type: Grant</option>
+          <option>Type: Exchange</option>
+          <option>Type: Training</option>
+          <option>Type: Competition</option>
+          <option>Type: Fellowship</option>
+        </select>
+        <input class="input" placeholder="Close date (YYYY-MM-DD)" />
+        <input class="input" placeholder="Owner organization" />
+      </div>
+      <button class="btn primary" style="margin-top:12px">Submit</button>
+    </section>
+  </main>
+
+  <footer id="about">
+    <div class="container inner">
+      <div>
+        <div style="font-weight:600">ASEAN STI Opportunities</div>
+        <p class="muted" style="margin:8px 0 0">A simple hub to discover science, technology and innovation opportunities across ASEAN platforms.</p>
+      </div>
+      <div>
+        <div style="font-weight:600">Links</div>
+        <ul style="list-style:none;padding:0;margin:8px 0 0;line-height:1.9" class="muted">
+          <li><a href="#browse" style="color:#dbeafe;text-decoration:underline">Browse all</a></li>
+          <li><a href="#submit" style="color:#dbeafe;text-decoration:underline">Submit</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-weight:600">Contact</div>
+        <p class="muted" style="margin:8px 0 0">Email: info@example.org</p>
+      </div>
+    </div>
+    <div class="footbar">
+      <div class="container">© 2025 ASEAN STI Hub (Mockup). All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-label="Opportunity details">
+    <div class="modal">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+        <h3 id="md-title" style="margin:0;font-size:18px;font-weight:600"></h3>
+        <button id="md-close" class="btn" style="border-color:#cbd5e1;color:#334155">Close</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px;font-size:14px;color:#334155">
+        <div><span style="color:#64748b">Country/Coverage: </span><span id="md-country"></span></div>
+        <div><span style="color:#64748b">Type: </span><span id="md-type"></span></div>
+        <div><span style="color:#64748b">Audience: </span><span id="md-audience"></span></div>
+        <div><span style="color:#64748b">Open–Close: </span><span id="md-window"></span></div>
+        <div><span style="color:#64748b">Owner: </span><span id="md-owner"></span></div>
+      </div>
+      <div style="margin-top:10px;color:#0f172a;font-size:14px">
+        <p id="md-elig" style="margin:0 0 6px"><strong>Eligibility:</strong> </p>
+        <p id="md-benefits" style="margin:0 0 6px"><strong>Benefits:</strong> </p>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <a id="md-link" class="btn" href="#" target="_blank">Go to official source</a>
+        <button id="md-close2" class="btn primary">Close window</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const COLORS = { blue: '#0032A0', red: '#EF3340', yellow: '#F8E600' };
+    const SAMPLE = [
+      {id:'STM-2025-001',title:'ASEAN–EU Joint Research Grant (Climate Adaptation)',country:'ASEAN-wide',type:'Grant',audience:'Researchers',eligibility:'ASEAN nationals, MSc/PhD',benefits:'Research grant + travel',open_date:'2025-08-01',close_date:'2025-10-15',owner_org:'SEA–EU JFS',official_url:'#'},
+      {id:'STM-2025-002',title:'Laboratory Exchange (Sakura Science)',country:'Japan + ASEAN',type:'Exchange',audience:'Students/Researchers',eligibility:'Higher-education institutions in ASEAN',benefits:'Travel + lab access',open_date:'2025-07-20',close_date:'2025-09-20',owner_org:'JST',official_url:'#'},
+      {id:'STM-2025-003',title:'Short-course: Data & AI for SMEs',country:'Thailand',type:'Training',audience:'SMEs/Startups',eligibility:'ASEAN-based entrepreneurs',benefits:'Free course + mentoring',open_date:'2025-08-10',close_date:'2025-09-05',owner_org:'COSTI',official_url:'#'},
+      {id:'STM-2025-004',title:'Smart Cities Innovation Challenge (ASCN)',country:'ASEAN-wide',type:'Competition',audience:'Local gov / research teams',eligibility:'Teams in the ASCN network',benefits:'Prize + showcase',open_date:'2025-07-01',close_date:'2025-11-01',owner_org:'ASCN',official_url:'#'},
+      {id:'STM-2025-005',title:'Technology Transfer Platform Development Grant (TMH)',country:'ASEAN-wide',type:'Grant',audience:'Universities/Research centres',eligibility:'Interdisciplinary consortia',benefits:'Project budget + coaching',open_date:'2025-08-20',close_date:'2025-10-05',owner_org:'COSTI/EU',official_url:'#'},
+      {id:'STM-2025-006',title:'ASEAN IVO – Call for Proposals (ICT)',country:'ASEAN + Japan',type:'Grant',audience:'Researchers/Institutions',eligibility:'ASEAN IVO network',benefits:'Project funding',open_date:'2025-08-05',close_date:'2025-09-25',owner_org:'NICT',official_url:'#'},
+      {id:'STM-2025-007',title:'ASEAN S&T Fellowship (Science Policy)',country:'ASEAN-wide',type:'Fellowship',audience:'Early-career scientists',eligibility:'ASEAN nationals',benefits:'Stipend + mentorship',open_date:'2025-09-01',close_date:'2025-10-10',owner_org:'ASEAN Foundation',official_url:'#'},
+      {id:'STM-2025-008',title:'ASTIW Exhibition Booth (STI Week)',country:'Malaysia',type:'Competition',audience:'Research teams/Startups',eligibility:'ASEAN nationals',benefits:'Booth + networking',open_date:'2025-07-15',close_date:'2025-09-30',owner_org:'COSTI',official_url:'#'},
+      {id:'STM-2025-009',title:'ASEAN Talent Mobility (ATM) – Researcher Placement',country:'ASEAN-wide',type:'Exchange',audience:'Researchers/Professionals',eligibility:'ASEAN nationals; host institution agreement',benefits:'Placement matching; facilitation',open_date:'2025-08-25',close_date:'2025-12-31',owner_org:'ASEAN TALENT (partners)',official_url:'#'},
+    ];
+
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+    const fmtDate = iso => {
+      const [y,m,d] = iso.split('-');
+      return `${d}/${m}/${y}`;
+    };
+    const daysLeft = (iso) => {
+      const cd = new Date(`${iso}T23:59:00`);
+      const now = new Date();
+      return Math.ceil((cd - now) / (1000*60*60*24));
+    };
+
+    const countrySel = $('#country');
+    const typeSel = $('#type');
+    const windowSel = $('#window');
+
+    const countries = ['All','ASEAN-wide','Thailand','Malaysia','Indonesia','Vietnam','Philippines','Singapore','Japan + ASEAN','ASEAN + Japan'];
+    countries.forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; countrySel.appendChild(o); });
+    const types = ['All','Grant','Exchange','Training','Competition','Fellowship'];
+    types.forEach(t=>{ const o=document.createElement('option'); o.value=t; o.textContent=t; typeSel.appendChild(o); });
+    const windows = ['All','Open now','Closing soon (≤14 days)','Closed'];
+    windows.forEach(w=>{ const o=document.createElement('option'); o.value=w; o.textContent=w; windowSel.appendChild(o); });
+
+    function badge(text, cls='badge'){
+      return `<span class="${cls}"><span>${text}</span></span>`;
+    }
+
+    function render(){
+      const q = $('#q').value.trim().toLowerCase();
+      const country = countrySel.value;
+      const type = typeSel.value;
+      const win = windowSel.value;
+
+      const data = SAMPLE.filter(it=>{
+        const matchQ = !q || it.title.toLowerCase().includes(q);
+        const matchC = country==='All' || it.country===country;
+        const matchT = type==='All' || it.type===type;
+        const d = daysLeft(it.close_date);
+        const status = d < 0 ? 'Closed' : d <= 14 ? 'Closing soon (≤14 days)' : 'Open now';
+        const matchW = win==='All' || status===win;
+        return matchQ && matchC && matchT && matchW;
+      });
+
+      $('#count').textContent = data.length;
+      const grid = $('#grid');
+      grid.innerHTML = data.map(it=>{
+        const d = daysLeft(it.close_date);
+        const statusText = d < 0 ? 'Closed' : d <= 14 ? 'Closing soon' : 'Open';
+        const statusClass = d < 0 ? 'badge status status--closed' : d <= 14 ? 'badge status status--warn' : 'badge status';
+        const statusLabel = d < 0 ? 'Closed' : d <= 14 ? `Closing soon` : 'Open';
+        const closes = d < 0 ? 'Closed' : (d <= 14 ? `Closing in ${d} days` : `Closes: ${fmtDate(it.close_date)}`);
+        return `
+          <article class="card">
+            <div class="row">
+              <h3>${it.title}</h3>
+              <span class="${statusClass}"><span>${statusLabel}</span></span>
+            </div>
+            <div class="badges">
+              ${badge(it.country)}
+              ${badge(it.type)}
+              ${badge(`Audience: ${it.audience}`)}
+            </div>
+            <div class="meta">${closes}</div>
+            <div class="actions">
+              <span style="color:#64748b">&nbsp;</span>
+              <div style="display:flex;gap:8px">
+                <a class="btn" href="${it.official_url}" target="_blank" rel="noopener">Official source</a>
+                <button class="btn primary" data-id="${it.id}">View details</button>
+              </div>
+            </div>
+          </article>`;
+      }).join('');
+
+      // bind detail buttons
+      $$('#grid .btn.primary').forEach(b=>{
+        b.addEventListener('click',()=> openDetail(b.getAttribute('data-id')));
+      });
+    }
+
+    function openDetail(id){
+      const it = SAMPLE.find(x=>x.id===id);
+      if(!it) return;
+      $('#md-title').textContent = it.title;
+      $('#md-country').textContent = it.country;
+      $('#md-type').textContent = it.type;
+      $('#md-audience').textContent = it.audience;
+      $('#md-window').textContent = `${fmtDate(it.open_date)} – ${fmtDate(it.close_date)}`;
+      $('#md-owner').textContent = it.owner_org;
+      $('#md-elig').innerHTML = `<strong>Eligibility:</strong> ${it.eligibility}`;
+      $('#md-benefits').innerHTML = `<strong>Benefits:</strong> ${it.benefits}`;
+      $('#md-link').href = it.official_url || '#';
+      $('#overlay').classList.add('show');
+    }
+
+    $('#md-close').addEventListener('click',()=> $('#overlay').classList.remove('show'));
+    $('#md-close2').addEventListener('click',()=> $('#overlay').classList.remove('show'));
+    $('#overlay').addEventListener('click', (e)=>{ if(e.target.id==='overlay'){ $('#overlay').classList.remove('show'); } });
+
+    // initial values
+    countrySel.value = 'All'; typeSel.value = 'All'; windowSel.value = 'Open now';
+    ['#q','#country','#type','#window'].forEach(sel=> $(sel).addEventListener('input', render));
+    ['#country','#type','#window'].forEach(sel=> $(sel).addEventListener('change', render));
+    render();
+  </script>
+</body>
+</html>
