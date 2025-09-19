@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>COSTI ASEAN Hub – UI/UX Mockup v0.1</title>
+<style>
+  :root{
+    --bg:#ffffff; --text:#0a0a0a; --muted:#6b7280; --accent:#0a66c2; --accent-2:#0b9;
+    --ok:#16a34a; --warn:#f59e0b; --bad:#ef4444; --card:#ffffff; --line:#e5e7eb; --chip:#eef2ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji"}
+  .container{max-width:1200px;margin:auto;padding:20px}
+  header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);z-index:10}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));}
+  h1{font-size:22px;margin:0}
+  .sub{color:var(--muted);font-size:14px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  input[type="search"], select{height:38px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .btn{height:38px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-top:8px}
+  .tab{padding:10px 14px;border:1px solid transparent;border-top-left-radius:10px;border-top-right-radius:10px;cursor:pointer;color:var(--muted)}
+  .tab.active{border-color:var(--line);border-bottom-color:var(--bg);color:var(--text)}
+  main{padding-top:14px}
+  .grid{display:grid;grid-template-columns:280px 1fr;gap:18px}
+  aside{border:1px solid var(--line);border-radius:14px;padding:14px;position:sticky;top:76px;height:fit-content;background:#fff}
+  aside h3{margin:0 0 10px 0;font-size:16px}
+  .chip{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:var(--chip);border:1px solid var(--line);font-size:12px;margin:4px 6px 0 0}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .card{border:1px solid var(--line);border-radius:14px;background:var(--card);padding:14px;display:flex;flex-direction:column;gap:10px}
+  .card h4{margin:0;font-size:16px}
+  .meta{display:flex;flex-wrap:wrap;gap:6px;color:var(--muted);font-size:12px}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:12px;padding:4px 8px;border-radius:999px;background:#f8fafc;border:1px solid var(--line)}
+  .status{font-size:12px;padding:3px 8px;border-radius:999px;color:#fff}
+  .s-ok{background:var(--ok)}
+  .s-warn{background:var(--warn)}
+  .s-bad{background:var(--bad)}
+  .card .actions{display:flex;gap:8px;margin-top:auto}
+  .section{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}
+  .section h3{margin:0 0 8px 0}
+  /* Map placeholder */
+  .map{width:100%;height:360px;border-radius:12px;border:1px dashed var(--line);position:relative;background:repeating-linear-gradient(45deg,#fafafa,#fafafa 10px,#f5f5f5 10px,#f5f5f5 20px)}
+  .pin{position:absolute;width:10px;height:10px;background:var(--accent);border-radius:999px;box-shadow:0 0 0 3px rgba(10,102,194,.15)}
+  .pin::after{content:attr(data-label);position:absolute;left:12px;top:-4px;background:#fff;border:1px solid var(--line);padding:2px 6px;border-radius:8px;font-size:12px;color:var(--text)}
+  /* Network placeholder */
+  .net{width:100%;height:360px;border-radius:12px;border:1px dashed var(--line);position:relative;background:#fafafa}
+  .node{position:absolute;width:34px;height:34px;border-radius:999px;background:#fff;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px}
+  .edge{position:absolute;height:2px;background:#cbd5e1;transform-origin:left center}
+  /* Drawer */
+  .drawer{position:fixed;inset:0;background:rgba(0,0,0,.25);display:none;align-items:flex-end}
+  .drawer.open{display:flex}
+  .panel{background:#fff;width:100%;max-height:80vh;border-top-left-radius:16px;border-top-right-radius:16px;padding:16px 18px;overflow:auto}
+  .panel h3{margin:4px 0 10px 0}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .kpi{min-width:160px;border:1px solid var(--line);border-radius:12px;padding:10px}
+  /* Responsive */
+  @media (max-width: 1080px){ .cards{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width: 820px){ .grid{grid-template-columns:1fr} aside{position:static} .cards{grid-template-columns:1fr} }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .muted{color:var(--muted)}
+  .meta.linkline{gap:8px}
+  .logo svg{width:100%;height:100%;display:block;border-radius:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="container topbar" aria-label="Global header">
+    <div class="brand" aria-label="Brand">
+      <div class="logo" role="img" aria-label="ASEAN emblem" style="background:none">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <title>ASEAN emblem (mockup)</title>
+          <circle cx="50" cy="50" r="48" fill="#014699"/>
+          <circle cx="50" cy="50" r="42" fill="#E31E24"/>
+          <g transform="translate(50,50)" fill="#FFD200">
+            <rect x="-20" y="-18" width="4" height="36" rx="2"/>
+            <rect x="-16" y="-18" width="4" height="36" rx="2"/>
+            <rect x="-12" y="-18" width="4" height="36" rx="2"/>
+            <rect x="-8" y="-18" width="4" height="36" rx="2"/>
+            <rect x="-4" y="-18" width="4" height="36" rx="2"/>
+            <rect x="0" y="-18" width="4" height="36" rx="2"/>
+            <rect x="4" y="-18" width="4" height="36" rx="2"/>
+            <rect x="8" y="-18" width="4" height="36" rx="2"/>
+            <rect x="12" y="-18" width="4" height="36" rx="2"/>
+            <rect x="16" y="-18" width="4" height="36" rx="2"/>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <h1>COSTI ASEAN Hub</h1>
+        <div class="sub">Directory • Map • Network • Profiles</div>
+      </div>
+    </div>
+    <div class="controls" role="group" aria-label="Quick controls">
+      <input id="q" type="search" placeholder="Search platforms… (e.g., AI, data, funding)" aria-label="Search" />
+      <select id="country" aria-label="Filter by country">
+        <option value="">All countries</option>
+        <option>Thailand</option><option>Singapore</option><option>Malaysia</option><option>Indonesia</option><option>Viet Nam</option><option>Philippines</option><option>Brunei Darussalam</option><option>Cambodia</option><option>Lao PDR</option><option>Myanmar</option>
+      </select>
+      <select id="category" aria-label="Filter by category">
+        <option value="">All categories</option>
+        <option>Network</option><option>Journal</option><option>Education</option><option>Talent</option><option>Startup</option><option>Facilities</option><option>Nuclear</option><option>Bioinformatics</option><option>Water</option><option>HPC</option><option>Metrology</option><option>Space</option><option>Health</option><option>Diagnostics</option><option>Data</option><option>Standards</option>
+      </select>
+      <button class="btn" id="reset">Reset</button>
+      <button class="btn primary" id="open-drawer" aria-expanded="false">Open Example Profile</button>
+    </div>
+  </div>
+  <div class="container">
+    <nav class="tabs" aria-label="Primary views">
+      <button class="tab active" data-tab="directory">Directory</button>
+      <button class="tab" data-tab="map">Map</button>
+      <button class="tab" data-tab="network">Network</button>
+      <button class="tab" data-tab="admin">Admin (mock)</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <div id="view-directory" class="view">
+    <div class="grid">
+      <aside aria-label="Filters">
+        <h3>Filters</h3>
+        <div class="sub">Quick tags</div>
+        <div>
+          <span class="chip" data-quick="Network">Network</span>
+          <span class="chip" data-quick="Journal">Journal</span>
+          <span class="chip" data-quick="Education">Education</span>
+          <span class="chip" data-quick="Talent">Talent</span>
+          <span class="chip" data-quick="Startup">Startup</span>
+          <span class="chip" data-quick="HPC">HPC</span>
+          <span class="chip" data-quick="Metrology">Metrology</span>
+          <span class="chip" data-quick="Space">Space</span>
+          <span class="chip" data-quick="Health">Health</span>
+          <span class="chip" data-quick="Data">Data</span>
+        </div>
+        <hr style="border:none;border-top:1px solid var(--line);margin:14px 0">
+        <div class="sub">Status legend</div>
+        <div class="meta" aria-hidden="true">
+          <span class="status s-ok">Online</span>
+          <span class="status s-warn">Degraded</span>
+          <span class="status s-bad">Offline</span>
+        </div>
+        <hr style="border:none;border-top:1px solid var(--line);margin:14px 0">
+        <div class="sub">Active filters</div>
+        <div id="activeFilters" class="tags"></div>
+      </aside>
+      <section>
+        <div class="meta" id="resultCount">Showing 0 platforms</div>
+        <div class="cards" id="cards"></div>
+      </section>
+    </div>
+  </div>
+
+  <div id="view-map" class="view" style="display:none">
+    <section class="section">
+      <h3>Map View (mock)</h3>
+      <div class="map" aria-label="Map placeholder">
+        <div class="pin" style="left:52%;top:46%" data-label="Thailand (6)"></div>
+        <div class="pin" style="left:57%;top:51%" data-label="Malaysia (3)"></div>
+        <div class="pin" style="left:60%;top:48%" data-label="Singapore (2)"></div>
+        <div class="pin" style="left:48%;top:52%" data-label="Myanmar (1)"></div>
+        <div class="pin" style="left:66%;top:45%" data-label="Philippines (2)"></div>
+        <div class="pin" style="left:64%;top:43%" data-label="Viet Nam (3)"></div>
+        <div class="pin" style="left:55%;top:44%" data-label="Lao PDR (1)"></div>
+        <div class="pin" style="left:59%;top:54%" data-label="Indonesia (4)"></div>
+        <div class="pin" style="left:62%;top:50%" data-label="Brunei (1)"></div>
+        <div class="pin" style="left:58%;top:47%" data-label="Cambodia (2)"></div>
+      </div>
+      <p class="sub" style="margin-top:10px">Note: Static mock. Real map would use MapLibre/Leaflet with clustering & filters.</p>
+    </section>
+  </div>
+
+  <div id="view-network" class="view" style="display:none">
+    <section class="section">
+      <h3>Network View (mock)</h3>
+      <div class="net" aria-label="Network placeholder" id="net"></div>
+      <p class="sub" style="margin-top:10px">Note: Static mock. Real view would use force-directed layout + filters by relation type.</p>
+    </section>
+  </div>
+
+  <div id="view-admin" class="view" style="display:none">
+    <section class="section">
+      <h3>Admin Console (mock)</h3>
+      <div class="row">
+        <div class="kpi"><div class="sub">Submissions pending</div><div style="font-size:28px;font-weight:800">3</div></div>
+        <div class="kpi"><div class="sub">Link errors (24h)</div><div style="font-size:28px;font-weight:800;color:var(--bad)">2</div></div>
+        <div class="kpi"><div class="sub">Metadata completeness</div><div style="font-size:28px;font-weight:800">84%</div></div>
+      </div>
+      <ul>
+        <li>Approve/Reject new platform submissions</li>
+        <li>Re-index search, manage categories & tags</li>
+        <li>Set link-health schedule & thresholds</li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<!-- Drawer: Platform Profile (example) -->
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+  <div class="panel">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <h3 id="profileTitle">ASEAN STI Hub (Example Profile)</h3>
+      <button class="btn" id="close-drawer" aria-label="Close">Close</button>
+    </div>
+    <div class="meta">Country: Thailand • Category: Research, Data Catalog • Status: <span class="status s-ok">Online</span></div>
+    <p>Regional hub for science, technology and innovation content. Deep links to news, events, and API docs.</p>
+    <div class="row">
+      <div class="kpi"><div class="sub">Last checked</div><div style="font-weight:700">2025‑09‑19 09:00</div></div>
+      <div class="kpi"><div class="sub">30‑day clicks</div><div style="font-weight:700">1,264</div></div>
+      <div class="kpi"><div class="sub">Feeds</div><div style="font-weight:700">News, Events</div></div>
+    </div>
+    <h4>Deep Links</h4>
+    <ul>
+      <li><a href="#" aria-label="Open site" onclick="event.preventDefault()">Main website</a></li>
+      <li><a href="#" onclick="event.preventDefault()">News feed (JSON)</a></li>
+      <li><a href="#" onclick="event.preventDefault()">Events (ICS)</a></li>
+      <li><a href="#" onclick="event.preventDefault()">API docs</a></li>
+    </ul>
+  </div>
+</div>
+
+<script>
+// --- Mock data ---
+const platforms = [
+  {name:"ASTNET", country:"Indonesia", url:"https://astnet.asean.org", categories:["Network","Publications"], status:"online"},
+  {name:"AJSTD (ASEAN Journal on Science and Technology for Development)", country:"Brunei Darussalam", url:"https://ajstd.ubd.edu.bn", categories:["Journal","Open Access"], status:"online"},
+  {name:"ASEAN Online Education Platform for Industry 4.0 (STIC)", country:"Lao PDR / Indonesia", url:"https://stic.asuengineeringonline.com", categories:["Education","Training"], status:"online"},
+  {name:"ASEAN Talent Mobility", country:"Thailand", url:"https://asean-talent.nxpo.or.th/home", categories:["Talent","Directory"], status:"online"},
+  {name:"ASEAN Startup Initiative", country:"Malaysia", url:"https://startup-asean.org", categories:["Startup","Ecosystem"], status:"online"},
+  {name:"Technology Management Hub", country:"Cambodia", url:"", categories:["Technology Management"], status:"offline"},
+  {name:"Regional Research Infrastructure", country:"Thailand", url:"", categories:["Research Infrastructure"], status:"offline"},
+  {name:"ASEAN Young Scientists Network", country:"Malaysia / Thailand", url:"", categories:["Network"], status:"offline"},
+  {name:"ASEAN Science & Technology Research and Education Network", country:"Singapore", url:"", categories:["Network"], status:"offline"},
+  {name:"ASEAN BCG Network", country:"Thailand", url:"https://www.nstda.or.th/en/about-asean-bcg-network.html", categories:["BCG","Network"], status:"online"},
+  {name:"ASEAN Foresight Alliance (AFA)", country:"Malaysia", url:"https://www.akademisains.gov.my/ar22/asean-foresight-alliance-afa/", categories:["Foresight","Alliance"], status:"online"},
+  {name:"AnMicro (ASEAN Centre on Microbial Utilization)", country:"Indonesia", url:"https://amibase.org", categories:["Microbiology","Data"], status:"online"},
+  {name:"ASEAN LNSN (Large Nuclear & Synchrotron Facilities Network)", country:"Thailand", url:"https://aseanlnsn.com/", categories:["Facilities","Network"], status:"online"},
+  {name:"ASEAN NPSR", country:"Thailand", url:"https://aseannpsr.com", categories:["Nuclear","Network"], status:"degraded"},
+  {name:"APBioNet (Asia Pacific Bioinformatics Network)", country:"Brunei / Singapore", url:"http://www.apbionet.org", categories:["Bioinformatics","Training"], status:"online"},
+  {name:"AHC (ASEAN Hydroinformatics Data Centre)", country:"Vietnam", url:"https://www.aseanwater.net/", categories:["Water","Data"], status:"online"},
+  {name:"ASEAN HPC Task Force (NSCC Singapore)", country:"Singapore", url:"https://www.nscc.sg/", categories:["HPC","Supercomputing"], status:"online"},
+  {name:"AMNCB (ASEAN Metrology Network in Chemistry and Biology)", country:"Singapore", url:"https://asean.bsn.go.id/", categories:["Metrology","Standards"], status:"online"},
+  {name:"ARMN-EGM (ASEAN Reference Material Network)", country:"Regional", url:"https://armn2018.wordpress.com", categories:["Reference Materials","Catalogue"], status:"online"},
+  {name:"ASEAN Expert Groups on Metrology (AWMC)", country:"Indonesia", url:"https://awmc.royalrain.go.th/asean/", categories:["Weather Modification","Metrology"], status:"online"},
+  {name:"ARTSA (ASEAN Research & Training Centre for Space Technology and Applications)", country:"Thailand", url:"https://artsa.gistda.or.th", categories:["Space","Training"], status:"online"},
+  {name:"ASEAN NDI", country:"Regional", url:"http://www.asean-ndi.net", categories:["Health","R&D Directory"], status:"online"},
+  {name:"DxD Hub (A*STAR)", country:"Singapore", url:"https://www.a-star.edu.sg/dxdhub/about-dxd-hub", categories:["Diagnostics","Innovation"], status:"online"},
+  {name:"ASMC (ASEAN Specialised Meteorological Centre)", country:"Regional", url:"https://asmc.asean.org/home/", categories:["Meteorology","Haze Monitoring"], status:"online"},
+  {name:"AEIC (ASEAN Earthquake Information Centre)", country:"Indonesia", url:"https://aeic.bmkg.go.id", categories:["Earthquake","Information"], status:"online"}
+];
+
+const cardsEl = document.getElementById('cards');
+const qEl = document.getElementById('q');
+const countryEl = document.getElementById('country');
+const categoryEl = document.getElementById('category');
+const resultCountEl = document.getElementById('resultCount');
+const activeFiltersEl = document.getElementById('activeFilters');
+
+function statusPill(status){
+  const map = {online:'s-ok', degraded:'s-warn', offline:'s-bad'};
+  const txt = status.charAt(0).toUpperCase()+status.slice(1);
+  return `<span class="status ${map[status]}">${txt}</span>`;
+}
+
+function displayDomain(url){
+  try { const u = new URL(url); return u.hostname.replace(/^www\./,''); } catch(e){ return url; }
+}
+
+function render(){
+  const q = qEl.value.trim().toLowerCase();
+  const ctry = countryEl.value;
+  const cat = categoryEl.value;
+  activeFiltersEl.innerHTML = '';
+  const chips = [];
+  if(q) chips.push(`<span class="tag">q: ${q}</span>`);
+  if(ctry) chips.push(`<span class="tag">${ctry}</span>`);
+  if(cat) chips.push(`<span class="tag">${cat}</span>`);
+  activeFiltersEl.innerHTML = chips.join('');
+
+  const filtered = platforms.filter(p => {
+    const matchesQ = !q || `${p.name} ${p.country} ${p.categories.join(' ')}`.toLowerCase().includes(q);
+    const matchesC = !ctry || p.country === ctry;
+    const matchesCat = !cat || p.categories.includes(cat);
+    return matchesQ && matchesC && matchesCat;
+  });
+
+  resultCountEl.textContent = `Showing ${filtered.length} platform${filtered.length!==1?'s':''}`;
+  cardsEl.innerHTML = filtered.map(p => `
+    <article class="card" role="article" aria-label="${p.name}">
+      <div class="meta">${statusPill(p.status)}</div>
+      <h4>${p.name}</h4>
+      <div class="meta">${p.country} • ${p.categories.join(', ')}</div>
+      <div class="tags">${p.categories.map(x=>`<span class="tag">${x}</span>`).join('')}</div>
+      <div class="meta linkline"><strong>Website:</strong> ${p.url ? '<a href="'+p.url+'" target="_blank" rel="noopener noreferrer">'+displayDomain(p.url)+'</a>' : '<span class="muted">—</span>'}</div>
+      <div class="actions">
+        <button class="btn" onclick="openDrawer('${p.name}')">View profile</button>
+        ${p.url ? '<a class="btn primary" href="'+p.url+'" target="_blank" rel="noopener">Go to site</a>' : '<button class="btn" disabled>No website</button>'}
+      </div>
+    </article>
+  `).join('');
+}
+
+qEl.addEventListener('input', render);
+countryEl.addEventListener('change', render);
+categoryEl.addEventListener('change', render);
+
+document.getElementById('reset').addEventListener('click', ()=>{
+  qEl.value=''; countryEl.value=''; categoryEl.value=''; render();
+});
+
+document.querySelectorAll('.chip').forEach(ch=>{
+  ch.addEventListener('click', ()=>{ categoryEl.value = ch.dataset.quick; render(); });
+});
+
+// Tabs
+const tabs = document.querySelectorAll('.tab');
+const views = {
+  directory: document.getElementById('view-directory'),
+  map: document.getElementById('view-map'),
+  network: document.getElementById('view-network'),
+  admin: document.getElementById('view-admin')
+};
+
+tabs.forEach(t=>{
+  t.addEventListener('click', ()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    Object.values(views).forEach(v=>v.style.display='none');
+    views[t.dataset.tab].style.display='block';
+  });
+});
+
+// Drawer
+const drawer = document.getElementById('drawer');
+function openDrawer(name){
+  document.getElementById('profileTitle').textContent = name + ' (Example Profile)';
+  drawer.classList.add('open');
+  document.getElementById('open-drawer').setAttribute('aria-expanded','true');
+}
+document.getElementById('open-drawer').addEventListener('click',()=>openDrawer('ASEAN STI Hub'));
+document.getElementById('close-drawer').addEventListener('click',()=>{drawer.classList.remove('open');document.getElementById('open-drawer').setAttribute('aria-expanded','false')});
+drawer.addEventListener('click', (e)=>{ if(e.target===drawer){ drawer.classList.remove('open'); document.getElementById('open-drawer').setAttribute('aria-expanded','false') }});
+
+// Network mock nodes/edges
+(function(){
+  const net = document.getElementById('net');
+  const nodes = [
+    {id:'TH', x:120, y:140, label:'TH'},
+    {id:'SG', x:360, y:240, label:'SG'},
+    {id:'MY', x:240, y:300, label:'MY'},
+    {id:'VN', x:520, y:140, label:'VN'},
+    {id:'ID', x:580, y:300, label:'ID'},
+    {id:'PH', x:740, y:180, label:'PH'}
+  ];
+  const edges = [ ['TH','SG'], ['TH','MY'], ['SG','MY'], ['VN','PH'], ['VN','SG'], ['MY','ID'] ];
+  // draw edges
+  edges.forEach(([a,b])=>{
+    const na = nodes.find(n=>n.id===a), nb = nodes.find(n=>n.id===b);
+    const dx = nb.x - na.x, dy = nb.y - na.y; const len = Math.hypot(dx,dy);
+    const ang = Math.atan2(dy,dx)*180/Math.PI;
+    const edge = document.createElement('div'); edge.className='edge';
+    edge.style.left = na.x+17+'px'; edge.style.top = na.y+17+'px'; edge.style.width = len+'px'; edge.style.transform = `rotate(${ang}deg)`;
+    net.appendChild(edge);
+  });
+  // draw nodes
+  nodes.forEach(n=>{
+    const el = document.createElement('div'); el.className='node'; el.style.left=n.x+'px'; el.style.top=n.y+'px'; el.textContent=n.label; net.appendChild(el);
+  });
+})();
+
+// init
+render();
+</script>
+</body>
+</html>
