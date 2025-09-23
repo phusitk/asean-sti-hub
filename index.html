@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ASEAN Digital Hub – UI/UX Mockup v0.1</title>
+
+<link rel="stylesheet" href="styles.css" />
+
+<!-- Leaflet (Map) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<!-- D3 (Force-directed graph) -->
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js" defer></script>
+</head>
+<body>
+<header>
+  <div class="container topbar" aria-label="Global header">
+    <div class="brand" aria-label="Brand">
+      <div class="logo" role="img" aria-label="ASEAN emblem" style="background:none">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <title>ASEAN emblem (mockup)</title>
+          <circle cx="50" cy="50" r="48" fill="#014699"/>
+          <circle cx="50" cy="50" r="42" fill="#E31E24"/>
+          <g transform="translate(50,50)" fill="#FFD200">
+            <rect x="-20" y="-18" width="4" height="36" rx="2"/>
+            <rect x="-16" y="-18" width="4" height="36" rx="2"/>
+            <rect x="-12" y="-18" width="4" height="36" rx="2"/>
+            <rect x="-8" y="-18" width="4" height="36" rx="2"/>
+            <rect x="-4" y="-18" width="4" height="36" rx="2"/>
+            <rect x="0" y="-18" width="4" height="36" rx="2"/>
+            <rect x="4" y="-18" width="4" height="36" rx="2"/>
+            <rect x="8" y="-18" width="4" height="36" rx="2"/>
+            <rect x="12" y="-18" width="4" height="36" rx="2"/>
+            <rect x="16" y="-18" width="4" height="36" rx="2"/>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <h1>COSTI ASEAN Digital Hub</h1>
+        <div class="sub">Directory • Map • Network • Profiles</div>
+      </div>
+    </div>
+    <div class="controls" role="group" aria-label="Quick controls">
+      <input id="q" type="search" placeholder="Search platforms… (e.g., AI, data, funding)" aria-label="Search" />
+      <select id="country" aria-label="Filter by country">
+        <option value="">All countries</option>
+        <option>Thailand</option><option>Singapore</option><option>Malaysia</option>
+        <option>Indonesia</option><option>Viet Nam</option><option>Philippines</option>
+        <option>Brunei Darussalam</option><option>Cambodia</option><option>Lao PDR</option><option>Myanmar</option>
+      </select>
+      <select id="category" aria-label="Filter by category">
+        <option value="">All categories</option>
+        <option>Network</option><option>Journal</option><option>Education</option><option>Talent</option>
+        <option>Startup</option><option>Facilities</option><option>Nuclear</option><option>Bioinformatics</option>
+        <option>Water</option><option>HPC</option><option>Metrology</option><option>Space</option>
+        <option>Health</option><option>Diagnostics</option><option>Data</option><option>Standards</option>
+      </select>
+      <button class="btn" id="reset">Reset</button>
+      <button class="btn primary" id="open-drawer" aria-expanded="false">Open Example Profile</button>
+    </div>
+  </div>
+  <div class="container">
+    <nav class="tabs" aria-label="Primary views">
+      <button class="tab active" data-tab="directory">Directory</button>
+      <button class="tab" data-tab="map">Map</button>
+      <button class="tab" data-tab="network">Network</button>
+      <button class="tab" data-tab="admin">Admin (mock)</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <div id="view-directory" class="view">
+    <div class="grid">
+      <aside aria-label="Filters">
+        <h3>Filters</h3>
+        <div class="sub">Quick tags</div>
+        <div>
+          <span class="chip" data-quick="Network">Network</span>
+          <span class="chip" data-quick="Journal">Journal</span>
+          <span class="chip" data-quick="Education">Education</span>
+          <span class="chip" data-quick="Talent">Talent</span>
+          <span class="chip" data-quick="Startup">Startup</span>
+          <span class="chip" data-quick="HPC">HPC</span>
+          <span class="chip" data-quick="Metrology">Metrology</span>
+          <span class="chip" data-quick="Space">Space</span>
+          <span class="chip" data-quick="Health">Health</span>
+          <span class="chip" data-quick="Data">Data</span>
+        </div>
+        <hr class="hr">
+        <div class="sub">Status legend</div>
+        <div class="meta" aria-hidden="true">
+          <span class="status s-ok">Online</span>
+          <span class="status s-warn">Degraded</span>
+          <span class="status s-bad">Offline</span>
+        </div>
+        <hr class="hr">
+        <div class="sub">Active filters</div>
+        <div id="activeFilters" class="tags"></div>
+      </aside>
+      <section>
+        <div class="meta" id="resultCount">Showing 0 platforms</div>
+        <div class="cards" id="cards"></div>
+      </section>
+    </div>
+  </div>
+
+  <div id="view-map" class="view" style="display:none">
+    <section class="section">
+      <h3>Map View (Leaflet + OpenStreetMap)</h3>
+      <div id="leaflet-map" class="leaflet-map" aria-label="Map of ASEAN capitals"></div>
+      <p class="sub" style="margin-top:10px">Tiles © OpenStreetMap contributors • Click a capital to see country platforms</p>
+    </section>
+  </div>
+
+<div id="view-network" class="view" style="display:none">
+  <section class="section">
+    <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:8px">
+      <h3>Network View (Force-directed)</h3>
+      <button class="btn" id="net-reset" title="Reset view and layout">Reset</button>
+    </div>
+    <div id="net" class="net-graph" aria-label="Platform network graph"></div>
+    <p class="sub" style="margin-top:10px">
+      Tip: drag nodes • scroll to zoom • click a node to open profile • hover to highlight neighbors
+    </p>
+  </section>
+</div>
+
+
+  <div id="view-admin" class="view" style="display:none">
+    <section class="section">
+      <h3>Admin Console (mock)</h3>
+      <div class="row">
+        <div class="kpi"><div class="sub">Submissions pending</div><div class="kpi-num">3</div></div>
+        <div class="kpi"><div class="sub">Link errors (24h)</div><div class="kpi-num bad">2</div></div>
+        <div class="kpi"><div class="sub">Metadata completeness</div><div class="kpi-num">84%</div></div>
+      </div>
+      <ul>
+        <li>Approve/Reject new platform submissions</li>
+        <li>Re-index search, manage categories & tags</li>
+        <li>Set link-health schedule & thresholds</li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<!-- Drawer: Platform Profile (example) -->
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+  <div class="panel">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <h3 id="profileTitle">ASEAN STI Hub (Example Profile)</h3>
+      <button class="btn" id="close-drawer" aria-label="Close">Close</button>
+    </div>
+    <div class="meta">Country: Thailand • Category: Research, Data Catalog • Status: <span class="status s-ok">Online</span></div>
+    <p>Regional hub for science, technology and innovation content. Deep links to news, events, and API docs.</p>
+    <div class="row">
+      <div class="kpi"><div class="sub">Last checked</div><div style="font-weight:700">2025-09-19 09:00</div></div>
+      <div class="kpi"><div class="sub">30-day clicks</div><div style="font-weight:700">1,264</div></div>
+      <div class="kpi"><div class="sub">Feeds</div><div style="font-weight:700">News, Events</div></div>
+    </div>
+    <h4>Deep Links</h4>
+    <ul>
+      <li><a href="#" aria-label="Open site" onclick="event.preventDefault()">Main website</a></li>
+      <li><a href="#" onclick="event.preventDefault()">News feed (JSON)</a></li>
+      <li><a href="#" onclick="event.preventDefault()">Events (ICS)</a></li>
+      <li><a href="#" onclick="event.preventDefault()">API docs</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Leaflet JS -->
+<script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- App JS -->
+<script src="app.js" defer></script>
+</body>
+</html>
