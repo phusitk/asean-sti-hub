@@ -1,4 +1,4 @@
-// ---------------- Platforms (เดิม) ----------------
+// ---------------- Platforms (sample from COSTI list) ----------------
 const platforms = [
   {name:"ASTNET", country:"Indonesia", url:"https://astnet.asean.org", categories:["Network","Publications"], status:"online"},
   {name:"AJSTD (ASEAN Journal on Science and Technology for Development)", country:"Brunei Darussalam", url:"https://ajstd.ubd.edu.bn", categories:["Journal","Open Access"], status:"online"},
@@ -123,7 +123,7 @@ const capitals = {
 const countryAlias = { 'Brunei':'Brunei Darussalam', 'Laos':'Lao PDR', 'Vietnam':'Viet Nam', 'VietNam':'Viet Nam' };
 const aseanCountries = Object.keys(capitals);
 const normalizeCountryName = n => countryAlias[n.trim()] || n.trim();
-const expandCountries = field => field.split(/[\/,]/).map(s=>normalizeCountryName(s));
+const expandCountries = field => field.split(/[\/ ,]/).map(s=>normalizeCountryName(s.trim())).filter(Boolean);
 
 function buildCountryPlatformIndex(){
   const index = Object.fromEntries(aseanCountries.map(c => [c, []]));
@@ -153,6 +153,7 @@ function ensureLeaflet(){
 
 // ---------------- D3 Force-directed Network ----------------
 let networkInited = false;
+let netSvg, netZoom, netSimulation;
 
 function ensureNetwork(){
   if (networkInited) return;
@@ -162,7 +163,7 @@ function ensureNetwork(){
   const width = container.clientWidth || 960;
   const height = container.clientHeight || 420;
 
-  // Nodes (จาก platforms) และ Links (ตัวอย่างชนิดความเชื่อม)
+  // Nodes and example links
   const nodes = platforms.map(p => ({
     id: p.name,
     group: (p.categories && p.categories[0]) ? p.categories[0] : 'Other',
@@ -184,28 +185,26 @@ function ensureNetwork(){
     { source:"ARTSA (ASEAN Research & Training Centre for Space Technology and Applications)", target:"ASMC (ASEAN Specialised Meteorological Centre)", type:"data_link" }
   ];
 
-  // กรองลิงก์ที่มีโหนดครบ
+  // Filter valid links
   const nodeIds = new Set(nodes.map(n=>n.id));
   const links = linksData.filter(l => nodeIds.has(l.source) && nodeIds.has(l.target));
 
-  // สีโหนดตามหมวดหมู่แรก
+  // Color by first category
   const catList = Array.from(new Set(nodes.map(n=>n.group)));
   const color = d3.scaleOrdinal(catList, d3.schemeTableau10);
 
-  const svg = d3.select(container).append('svg')
+  netZoom = d3.zoom().scaleExtent([0.3, 3]).on('zoom', (event)=> g.attr('transform', event.transform));
+  netSvg = d3.select(container).append('svg')
     .attr('viewBox', [0, 0, width, height])
-    .call(d3.zoom().scaleExtent([0.3, 3]).on('zoom', (event)=> g.attr('transform', event.transform)));
+    .call(netZoom);
+  const g = netSvg.append('g');
 
-  const g = svg.append('g');
-
-  // เส้นเชื่อม
   const link = g.append('g').selectAll('line')
     .data(links)
     .join('line')
     .attr('class', d => `link type-${d.type}`)
     .attr('stroke-linecap','round');
 
-  // โหนด + label
   const node = g.append('g')
     .selectAll('g')
     .data(nodes)
@@ -221,7 +220,7 @@ function ensureNetwork(){
     .on('mouseout', clearHighlight);
 
   node.append('circle')
-    .attr('r', 8)
+    .attr('r', 12)                 // enlarged node size
     .attr('fill', d => color(d.group));
 
   node.append('title')
@@ -232,22 +231,21 @@ Status: ${d.status}`);
 
   node.append('text')
     .text(d => trimLabel(d.id))
-    .attr('x', 12)
+    .attr('x', 16)                 // shifted label for larger circle
     .attr('y', 4)
-    .attr('font-size', 11)
+    .attr('font-size', 12)
     .attr('fill', '#111');
 
-  // จำแนกน้ำหนัก/ระยะของลิงก์ตามชนิดความเชื่อม
   const linkDistance = l => ({ shared_infra:70, data_link:90, membership:110, 'co-innovation':100, publication:100 }[l.type] || 100);
   const linkStrength = l => ({ shared_infra:.35, data_link:.25, membership:.2, 'co-innovation':.22, publication:.2 }[l.type] || .2);
 
-  const simulation = d3.forceSimulation(nodes)
+  netSimulation = d3.forceSimulation(nodes)
     .force('link', d3.forceLink(links).id(d=>d.id).distance(linkDistance).strength(linkStrength))
     .force('charge', d3.forceManyBody().strength(-140))
     .force('center', d3.forceCenter(width/2, height/2))
-    .force('collision', d3.forceCollide(18));
+    .force('collision', d3.forceCollide(22)); // enlarged collision radius
 
-  simulation.on('tick', () => {
+  netSimulation.on('tick', () => {
     link
       .attr('x1', d=>d.source.x).attr('y1', d=>d.source.y)
       .attr('x2', d=>d.target.x).attr('y2', d=>d.target.y);
@@ -255,25 +253,24 @@ Status: ${d.status}`);
   });
 
   function dragstarted(event, d){
-    if (!event.active) simulation.alphaTarget(0.3).restart();
+    if (!event.active) netSimulation.alphaTarget(0.3).restart();
     d.fx = d.x; d.fy = d.y;
   }
   function dragged(event, d){
     d.fx = event.x; d.fy = event.y;
   }
   function dragended(event, d){
-    if (!event.active) simulation.alphaTarget(0);
+    if (!event.active) netSimulation.alphaTarget(0);
     d.fx = null; d.fy = null;
   }
 
-  // Highlight neighbors
+  // Neighbor highlight
   const adj = new Map();
   links.forEach(l => {
     const a = l.source.id || l.source, b = l.target.id || l.target;
     (adj.get(a) || adj.set(a,new Set()).get(a)).add(b);
     (adj.get(b) || adj.set(b,new Set()).get(b)).add(a);
   });
-
   function highlight(d){
     const nbrs = adj.get(d.id) || new Set();
     node.selectAll('circle').style('opacity', n => (n.id===d.id || nbrs.has(n.id)) ? 1 : 0.2);
@@ -286,6 +283,21 @@ Status: ${d.status}`);
   }
 
   function trimLabel(s){ return s.length > 26 ? s.slice(0,24)+'…' : s; }
+
+  // Reset handler
+  document.getElementById('net-reset').addEventListener('click', resetNetwork);
+}
+
+function resetNetwork(){
+  if (!networkInited){ ensureNetwork(); }
+  if (!netSvg || !netZoom || !netSimulation) return;
+  // unlock fixed nodes
+  netSimulation.nodes().forEach(n => { n.fx = null; n.fy = null; });
+  // zoom/pan reset
+  netSvg.transition().duration(400).call(netZoom.transform, d3.zoomIdentity);
+  // reheat and cool
+  netSimulation.alpha(1).restart();
+  setTimeout(()=> netSimulation.alphaTarget(0), 600);
 }
 
 // ---------------- Init ----------------
