@@ -36,13 +36,16 @@ const resultCountEl = document.getElementById('resultCount');
 const activeFiltersEl = document.getElementById('activeFilters');
 
 function statusPill(status){
-  const map = {online:'s-ok', degraded:'s-warn', offline:'s-bad'};
-  const txt = status.charAt(0).toUpperCase()+status.slice(1);
-  return `<span class="status ${map[status]}">${txt}</span>`;
+  const map = {online:'s-ok', degraded:'s-soon', offline:'s-soon'};
+  const textMap = {online:'Online', degraded:'Website coming soon', offline:'Website coming soon'};
+  const txt = textMap[status] || 'Website coming soon';
+  return `<span class="status ${map[status] || 's-soon'}">${txt}</span>`;
 }
+
 function displayDomain(url){
   try { const u = new URL(url); return u.hostname.replace(/^www\./,''); } catch(e){ return url; }
 }
+
 function render(){
   const q = qEl.value.trim().toLowerCase();
   const ctry = countryEl.value;
@@ -130,13 +133,20 @@ function buildCountryPlatformIndex(){
   platforms.forEach(p => expandCountries(p.country).forEach(c => { if (index[c]) index[c].push(p.name); }));
   return index;
 }
+
 function ensureLeaflet(){
   if (!leafletMap){
     const container = document.getElementById('leaflet-map');
     leafletMap = L.map(container, { zoomControl: true });
-    const bounds = L.latLngBounds(L.latLng(-12,90), L.latLng(23,135));
-    leafletMap.fitBounds(bounds);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(leafletMap);
+    
+    // ตั้งค่า view เริ่มต้นให้ครอบคลุมอาเซียน - zoom level 4
+    leafletMap.setView([8, 115], 4);
+    
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+      maxZoom: 19, 
+      attribution: '&copy; OpenStreetMap contributors' 
+    }).addTo(leafletMap);
+    
     const idx = buildCountryPlatformIndex();
     const allLatLngs = [];
     aseanCountries.forEach(c => {
@@ -145,7 +155,13 @@ function ensureLeaflet(){
       const listHTML = list.length ? `<ul style="padding-left:18px;margin:6px 0 0">${list.map(n=>`<li>${n}</li>`).join('')}</ul>` : `<em>No platforms listed yet</em>`;
       L.marker([cap.lat,cap.lon]).addTo(leafletMap).bindPopup(`<strong>${c}</strong> — ${cap.city}${listHTML}`);
     });
-    leafletMap.fitBounds(L.latLngBounds(allLatLngs), { padding:[20,20] });
+    
+    // ตั้งขอบเขตสูงสุดที่แสดงได้
+    const maxBounds = L.latLngBounds(
+      L.latLng(-15, 85),   // Southwest 
+      L.latLng(30, 145)    // Northeast
+    );
+    leafletMap.setMaxBounds(maxBounds);
   } else {
     setTimeout(()=>leafletMap.invalidateSize(), 200);
   }
@@ -220,7 +236,7 @@ function ensureNetwork(){
     .on('mouseout', clearHighlight);
 
   node.append('circle')
-    .attr('r', 12)                 // enlarged node size
+    .attr('r', 12)
     .attr('fill', d => color(d.group));
 
   node.append('title')
@@ -231,7 +247,7 @@ Status: ${d.status}`);
 
   node.append('text')
     .text(d => trimLabel(d.id))
-    .attr('x', 16)                 // shifted label for larger circle
+    .attr('x', 16)
     .attr('y', 4)
     .attr('font-size', 12)
     .attr('fill', '#111');
@@ -243,7 +259,7 @@ Status: ${d.status}`);
     .force('link', d3.forceLink(links).id(d=>d.id).distance(linkDistance).strength(linkStrength))
     .force('charge', d3.forceManyBody().strength(-140))
     .force('center', d3.forceCenter(width/2, height/2))
-    .force('collision', d3.forceCollide(22)); // enlarged collision radius
+    .force('collision', d3.forceCollide(22));
 
   netSimulation.on('tick', () => {
     link
