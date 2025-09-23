@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ASEAN Digital Hub – UI/UX Mockup v0.1</title>
+<title>COSTI ASEAN Hub – UI/UX Mockup v0.1</title>
 
 <link rel="stylesheet" href="styles.css" />
 
-<!-- Leaflet (Map) -->
+<!-- Leaflet (Map) CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-
 <!-- D3 (Force-directed graph) -->
 <script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js" defer></script>
 </head>
@@ -17,27 +16,18 @@
 <header>
   <div class="container topbar" aria-label="Global header">
     <div class="brand" aria-label="Brand">
-      <div class="logo" role="img" aria-label="ASEAN emblem" style="background:none">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <title>ASEAN emblem (mockup)</title>
-          <circle cx="50" cy="50" r="48" fill="#014699"/>
-          <circle cx="50" cy="50" r="42" fill="#E31E24"/>
-          <g transform="translate(50,50)" fill="#FFD200">
-            <rect x="-20" y="-18" width="4" height="36" rx="2"/>
-            <rect x="-16" y="-18" width="4" height="36" rx="2"/>
-            <rect x="-12" y="-18" width="4" height="36" rx="2"/>
-            <rect x="-8" y="-18" width="4" height="36" rx="2"/>
-            <rect x="-4" y="-18" width="4" height="36" rx="2"/>
-            <rect x="0" y="-18" width="4" height="36" rx="2"/>
-            <rect x="4" y="-18" width="4" height="36" rx="2"/>
-            <rect x="8" y="-18" width="4" height="36" rx="2"/>
-            <rect x="12" y="-18" width="4" height="36" rx="2"/>
-            <rect x="16" y="-18" width="4" height="36" rx="2"/>
-          </g>
-        </svg>
+      <div class="logo" aria-label="ASEAN emblem">
+        <img
+          src="https://asean.org/wp-content/uploads/2024/11/ASEAN-Emblem-600x600.png"
+          alt="ASEAN emblem"
+          width="40" height="40"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
       </div>
       <div>
-        <h1>COSTI ASEAN Digital Hub</h1>
+        <h1>COSTI ASEAN Hub</h1>
         <div class="sub">Directory • Map • Network • Profiles</div>
       </div>
     </div>
@@ -114,19 +104,18 @@
     </section>
   </div>
 
-<div id="view-network" class="view" style="display:none">
-  <section class="section">
-    <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:8px">
-      <h3>Network View (Force-directed)</h3>
-      <button class="btn" id="net-reset" title="Reset view and layout">Reset</button>
-    </div>
-    <div id="net" class="net-graph" aria-label="Platform network graph"></div>
-    <p class="sub" style="margin-top:10px">
-      Tip: drag nodes • scroll to zoom • click a node to open profile • hover to highlight neighbors
-    </p>
-  </section>
-</div>
-
+  <div id="view-network" class="view" style="display:none">
+    <section class="section">
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:8px">
+        <h3>Network View (Force-directed)</h3>
+        <button class="btn" id="net-reset" title="Reset view and layout">Reset</button>
+      </div>
+      <div id="net" class="net-graph" aria-label="Platform network graph"></div>
+      <p class="sub" style="margin-top:10px">
+        Tip: drag nodes • scroll to zoom • click a node to open profile • hover to highlight neighbors
+      </p>
+    </section>
+  </div>
 
   <div id="view-admin" class="view" style="display:none">
     <section class="section">
