@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ASEAN STI Digital Gateway</title>
+<title>ASEAN STI Digital Gateway — UI/UX Mockup v0.1</title>
 
 <link rel="stylesheet" href="styles.css" />
 
@@ -28,7 +28,7 @@
       </div>
       <div>
         <h1>ASEAN STI Digital Gateway</h1>
-        <div class="sub">Directory • Map • Network • Profiles</div>
+        <div class="sub">Directory • Map • Network • Content Discovery • Profiles</div>
       </div>
     </div>
     <div class="controls" role="group" aria-label="Quick controls">
@@ -55,6 +55,7 @@
       <button class="tab active" data-tab="directory">Directory</button>
       <button class="tab" data-tab="map">Map</button>
       <button class="tab" data-tab="network">Network</button>
+      <button class="tab" data-tab="content-discovery">Content Discovery</button>
       <button class="tab" data-tab="admin">Admin (mock)</button>
     </nav>
   </div>
@@ -78,12 +79,6 @@
           <span class="chip" data-quick="Health">Health</span>
           <span class="chip" data-quick="Data">Data</span>
         </div>
-        <hr class="hr">
-        <!--div class="sub">Status legend</div>
-        <div class="meta" aria-hidden="true">
-          <span class="status s-ok">Online</span>
-          <span class="status s-soon">Website coming soon</span>
-        </div-->
         <hr class="hr">
         <div class="sub">Active filters</div>
         <div id="activeFilters" class="tags"></div>
@@ -113,6 +108,168 @@
       <p class="sub" style="margin-top:10px">
         Tip: drag nodes • scroll to zoom • click a node to open profile • hover to highlight neighbors
       </p>
+    </section>
+  </div>
+
+  <div id="view-content-discovery" class="view" style="display:none">
+    <section class="section">
+      <h3>Content Discovery - Smart Research Aggregation</h3>
+      
+      <div class="ai-dashboard">
+        <div class="ai-stats">
+          <div class="ai-card">
+            <div class="ai-card-header">
+              <span class="ai-icon">🔍</span>
+              <h4>Content Sources</h4>
+            </div>
+            <div class="ai-metric">47</div>
+            <div class="ai-label">Active data sources</div>
+          </div>
+          
+          <div class="ai-card">
+            <div class="ai-card-header">
+              <span class="ai-icon">📊</span>
+              <h4>Today's Harvest</h4>
+            </div>
+            <div class="ai-metric">1,234</div>
+            <div class="ai-label">New items discovered</div>
+          </div>
+          
+          <div class="ai-card">
+            <div class="ai-card-header">
+              <span class="ai-icon">🎯</span>
+              <h4>Match Accuracy</h4>
+            </div>
+            <div class="ai-metric">94.7%</div>
+            <div class="ai-label">Content categorization</div>
+          </div>
+          
+          <div class="ai-card">
+            <div class="ai-card-header">
+              <span class="ai-icon">⚡</span>
+              <h4>Processing Speed</h4>
+            </div>
+            <div class="ai-metric">2.3s</div>
+            <div class="ai-label">Average per item</div>
+          </div>
+        </div>
+
+        <div class="ai-content-grid">
+          <div class="ai-section">
+            <h4>Recently Discovered Content</h4>
+            <div class="ai-content-list">
+              <div class="ai-content-item">
+                <div class="ai-content-meta">
+                  <span class="ai-badge ai-new">NEW</span>
+                  <span class="ai-source">NSTDA Thailand</span>
+                  <span class="ai-time">5 min ago</span>
+                </div>
+                <div class="ai-content-title">AI for Smart Agriculture Initiative Launched</div>
+                <div class="ai-tags">
+                  <span class="tag">Agriculture</span>
+                  <span class="tag">AI</span>
+                  <span class="tag">Innovation</span>
+                </div>
+              </div>
+              
+              <div class="ai-content-item">
+                <div class="ai-content-meta">
+                  <span class="ai-badge ai-trending">TRENDING</span>
+                  <span class="ai-source">A*STAR Singapore</span>
+                  <span class="ai-time">12 min ago</span>
+                </div>
+                <div class="ai-content-title">Quantum Computing Research Breakthrough</div>
+                <div class="ai-tags">
+                  <span class="tag">Quantum</span>
+                  <span class="tag">Research</span>
+                  <span class="tag">Computing</span>
+                </div>
+              </div>
+              
+              <div class="ai-content-item">
+                <div class="ai-content-meta">
+                  <span class="ai-badge ai-matched">MATCHED</span>
+                  <span class="ai-source">LIPI Indonesia</span>
+                  <span class="ai-time">18 min ago</span>
+                </div>
+                <div class="ai-content-title">Marine Biodiversity Conservation Program</div>
+                <div class="ai-tags">
+                  <span class="tag">Environment</span>
+                  <span class="tag">Marine</span>
+                  <span class="tag">Conservation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ai-section">
+            <h4>Smart Insights</h4>
+            <div class="ai-recommendations">
+              <div class="ai-rec-item">
+                <div class="ai-rec-header">
+                  <span class="ai-icon">🔗</span>
+                  <span>Collaboration Opportunity</span>
+                </div>
+                <div class="ai-rec-content">
+                  Thailand's AI Agriculture project matches with Indonesia's Smart Farming initiative. 
+                  <strong>87% compatibility score</strong>
+                </div>
+                <button class="btn-ai-action">Suggest Partnership</button>
+              </div>
+              
+              <div class="ai-rec-item">
+                <div class="ai-rec-header">
+                  <span class="ai-icon">📈</span>
+                  <span>Trending Topic</span>
+                </div>
+                <div class="ai-rec-content">
+                  "Sustainable Energy" mentioned 43x across 6 countries this week. 
+                  <strong>Rising trend detected</strong>
+                </div>
+                <button class="btn-ai-action">View Trend Analysis</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ai-controls">
+          <div class="ai-control-section">
+            <h4>Discovery Controls</h4>
+            <div class="ai-toggle-group">
+              <label class="ai-toggle">
+                <input type="checkbox" checked>
+                <span>Auto-categorization</span>
+              </label>
+              <label class="ai-toggle">
+                <input type="checkbox" checked>
+                <span>Duplicate detection</span>
+              </label>
+              <label class="ai-toggle">
+                <input type="checkbox">
+                <span>Real-time alerts</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="ai-control-section">
+            <h4>Content Sources</h4>
+            <div class="ai-source-list">
+              <div class="ai-source-item">
+                <span class="ai-status online"></span>
+                <span>RSS Feeds (12 active)</span>
+              </div>
+              <div class="ai-source-item">
+                <span class="ai-status online"></span>
+                <span>API Endpoints (8 active)</span>
+              </div>
+              <div class="ai-source-item">
+                <span class="ai-status degraded"></span>
+                <span>Web Scraping (3 active)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 

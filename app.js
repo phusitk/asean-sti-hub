@@ -86,6 +86,7 @@ const views = {
   directory: document.getElementById('view-directory'),
   map: document.getElementById('view-map'),
   network: document.getElementById('view-network'),
+  'content-discovery': document.getElementById('view-content-discovery'),
   admin: document.getElementById('view-admin')
 };
 tabs.forEach(t=>{
@@ -157,6 +158,7 @@ function ensureLeaflet(){
     });
     
     // ตั้งขอบเขตสูงสุดที่แสดงได้
+    
     const maxBounds = L.latLngBounds(
       L.latLng(-15, 85),   // Southwest 
       L.latLng(30, 145)    // Northeast
