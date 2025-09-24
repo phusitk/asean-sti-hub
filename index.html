@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ASEAN STI Digital Gateway — UI/UX Mockup v0.1</title>
+<title>ASEAN STI Digital Gateway — Research & Innovation Hub</title>
+<meta name="description" content="Centralized gateway to ASEAN science, technology and innovation platforms with intelligent content aggregation and smart matching systems">
+<meta name="keywords" content="ASEAN, science, technology, innovation, research, digital gateway, STI">
 
 <link rel="stylesheet" href="styles.css" />
 
@@ -28,108 +30,166 @@
       </div>
       <div>
         <h1>ASEAN STI Digital Gateway</h1>
-        <div class="sub">Directory • Map • Network • Content Discovery • Profiles</div>
+        <div class="sub">Harmonizing Science, Technology & Innovation Across ASEAN</div>
       </div>
     </div>
     <div class="controls" role="group" aria-label="Quick controls">
-      <input id="q" type="search" placeholder="Search platforms… (e.g., AI, data, funding)" aria-label="Search" />
+      <input id="q" type="search" placeholder="Search platforms, research, funding..." aria-label="Search" />
       <select id="country" aria-label="Filter by country">
-        <option value="">All countries</option>
+        <option value="">All ASEAN Countries</option>
         <option>Thailand</option><option>Singapore</option><option>Malaysia</option>
         <option>Indonesia</option><option>Viet Nam</option><option>Philippines</option>
         <option>Brunei Darussalam</option><option>Cambodia</option><option>Lao PDR</option><option>Myanmar</option>
       </select>
       <select id="category" aria-label="Filter by category">
-        <option value="">All categories</option>
+        <option value="">All Categories</option>
         <option>Network</option><option>Journal</option><option>Education</option><option>Talent</option>
         <option>Startup</option><option>Facilities</option><option>Nuclear</option><option>Bioinformatics</option>
         <option>Water</option><option>HPC</option><option>Metrology</option><option>Space</option>
         <option>Health</option><option>Diagnostics</option><option>Data</option><option>Standards</option>
       </select>
-      <button class="btn" id="reset">Reset</button>
-      <button class="btn primary" id="open-drawer" aria-expanded="false">Open Example Profile</button>
+      <button class="btn" id="reset">Reset Filters</button>
+      <div class="user-menu">
+        <button class="btn primary" id="login-btn">Sign In</button>
+        <select id="role-selector" style="display: none;">
+          <option value="guest">Guest</option>
+          <option value="researcher">Researcher</option>
+          <option value="admin">Administrator</option>
+          <option value="coordinator">Country Coordinator</option>
+        </select>
+      </div>
     </div>
   </div>
   <div class="container">
     <nav class="tabs" aria-label="Primary views">
-      <button class="tab active" data-tab="directory">Directory</button>
-      <button class="tab" data-tab="map">Map</button>
-      <button class="tab" data-tab="network">Network</button>
-      <button class="tab" data-tab="content-discovery">Content Discovery</button>
-      <button class="tab" data-tab="admin">Admin (mock)</button>
+      <button class="tab active" data-tab="directory">Platform Directory</button>
+      <button class="tab" data-tab="map">Regional Map</button>
+      <button class="tab" data-tab="network">Network Graph</button>
+      <button class="tab" data-tab="content-discovery">Content Aggregator</button>
+      <button class="tab" data-tab="research-visa">Research Visa Navigator</button>
+      <button class="tab" data-tab="events">Conference & Events</button>
+      <button class="tab" data-tab="university-contacts">Institution Contacts</button>
+      <button class="tab" data-tab="admin">Admin Console</button>
     </nav>
   </div>
 </header>
 
 <main class="container">
+  <!-- Platform Directory View -->
   <div id="view-directory" class="view">
     <div class="grid">
       <aside aria-label="Filters">
-        <h3>Filters</h3>
-        <div class="sub">Quick tags</div>
+        <h3>Platform Filters</h3>
+        <div class="sub">Quick access categories</div>
         <div>
-          <span class="chip" data-quick="Network">Network</span>
-          <span class="chip" data-quick="Journal">Journal</span>
+          <span class="chip" data-quick="Network">Networks</span>
+          <span class="chip" data-quick="Journal">Journals</span>
           <span class="chip" data-quick="Education">Education</span>
           <span class="chip" data-quick="Talent">Talent</span>
-          <span class="chip" data-quick="Startup">Startup</span>
+          <span class="chip" data-quick="Startup">Startups</span>
           <span class="chip" data-quick="HPC">HPC</span>
-          <span class="chip" data-quick="Metrology">Metrology</span>
-          <span class="chip" data-quick="Space">Space</span>
+          <span class="chip" data-quick="Metrology">Standards</span>
+          <span class="chip" data-quick="Space">Space Tech</span>
           <span class="chip" data-quick="Health">Health</span>
           <span class="chip" data-quick="Data">Data</span>
         </div>
         <hr class="hr">
         <div class="sub">Active filters</div>
         <div id="activeFilters" class="tags"></div>
+        <hr class="hr">
+        <div class="sub">Platform status</div>
+        <div class="status-legend">
+          <div><span class="status s-ok">Online</span> - Active platform</div>
+          <div><span class="status s-soon">Coming Soon</span> - Under development</div>
+        </div>
       </aside>
       <section>
-        <div class="meta" id="resultCount">Showing 0 platforms</div>
+        <div class="section-header">
+          <div class="meta" id="resultCount">Loading platforms...</div>
+          <div class="view-controls">
+            <button class="btn btn-sm" id="grid-view">Grid</button>
+            <button class="btn btn-sm" id="list-view">List</button>
+          </div>
+        </div>
         <div class="cards" id="cards"></div>
       </section>
     </div>
   </div>
 
+  <!-- Regional Map View -->
   <div id="view-map" class="view" style="display:none">
     <section class="section">
-      <h3>Map View (Leaflet + OpenStreetMap)</h3>
-      <div id="leaflet-map" class="leaflet-map" aria-label="Map of ASEAN capitals"></div>
-      <p class="sub" style="margin-top:10px">Tiles © OpenStreetMap contributors • Click a capital to see country platforms</p>
+      <h3>ASEAN STI Platform Distribution</h3>
+      <div id="leaflet-map" class="leaflet-map" aria-label="Interactive map of ASEAN capitals with platform data"></div>
+      <div class="map-legend">
+        <p>Interactive map showing the distribution of STI platforms across ASEAN member countries. Click on capital markers to view platforms by country.</p>
+        <div class="map-stats">
+          <div class="stat-item">
+            <span class="stat-number">25+</span>
+            <span class="stat-label">Platforms</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">10</span>
+            <span class="stat-label">Countries</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">15+</span>
+            <span class="stat-label">Categories</span>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 
+  <!-- Network Graph View -->
   <div id="view-network" class="view" style="display:none">
     <section class="section">
-      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:8px">
-        <h3>Network View (Force-directed)</h3>
-        <button class="btn" id="net-reset" title="Reset view and layout">Reset</button>
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div>
+          <h3>Platform Network Analysis</h3>
+          <div class="sub">Visualizing connections and collaborations between ASEAN STI platforms</div>
+        </div>
+        <div class="network-controls">
+          <button class="btn btn-sm" id="net-reset" title="Reset view and layout">Reset View</button>
+          <button class="btn btn-sm" id="net-cluster" title="Group by category">Cluster</button>
+        </div>
       </div>
-      <div id="net" class="net-graph" aria-label="Platform network graph"></div>
-      <p class="sub" style="margin-top:10px">
-        Tip: drag nodes • scroll to zoom • click a node to open profile • hover to highlight neighbors
-      </p>
+      <div id="net" class="net-graph" aria-label="Interactive network graph of platform relationships"></div>
+      <div class="network-legend">
+        <h4>Connection Types:</h4>
+        <div class="legend-items">
+          <div><span class="legend-line type-data_link"></span> Data Sharing</div>
+          <div><span class="legend-line type-shared_infra"></span> Shared Infrastructure</div>
+          <div><span class="legend-line type-membership"></span> Membership</div>
+          <div><span class="legend-line type-co-innovation"></span> Co-Innovation</div>
+          <div><span class="legend-line type-publication"></span> Publications</div>
+        </div>
+        <p><strong>Interaction:</strong> Drag nodes • Scroll to zoom • Click nodes for details • Hover to highlight connections</p>
+      </div>
     </section>
   </div>
 
+  <!-- Content Discovery/Aggregator View -->
   <div id="view-content-discovery" class="view" style="display:none">
     <section class="section">
-      <h3>Content Discovery - Smart Research Aggregation</h3>
+      <h3>Intelligent Content Aggregation Hub</h3>
+      <div class="sub">AI-powered content discovery and smart matching across ASEAN STI platforms</div>
       
       <div class="ai-dashboard">
         <div class="ai-stats">
           <div class="ai-card">
             <div class="ai-card-header">
               <span class="ai-icon">🔍</span>
-              <h4>Content Sources</h4>
+              <h4>Active Sources</h4>
             </div>
             <div class="ai-metric">47</div>
-            <div class="ai-label">Active data sources</div>
+            <div class="ai-label">Data collection endpoints</div>
           </div>
           
           <div class="ai-card">
             <div class="ai-card-header">
               <span class="ai-icon">📊</span>
-              <h4>Today's Harvest</h4>
+              <h4>Daily Harvest</h4>
             </div>
             <div class="ai-metric">1,234</div>
             <div class="ai-label">New items discovered</div>
@@ -138,7 +198,7 @@
           <div class="ai-card">
             <div class="ai-card-header">
               <span class="ai-icon">🎯</span>
-              <h4>Match Accuracy</h4>
+              <h4>AI Accuracy</h4>
             </div>
             <div class="ai-metric">94.7%</div>
             <div class="ai-label">Content categorization</div>
@@ -147,7 +207,7 @@
           <div class="ai-card">
             <div class="ai-card-header">
               <span class="ai-icon">⚡</span>
-              <h4>Processing Speed</h4>
+              <h4>Processing Time</h4>
             </div>
             <div class="ai-metric">2.3s</div>
             <div class="ai-label">Average per item</div>
@@ -156,7 +216,7 @@
 
         <div class="ai-content-grid">
           <div class="ai-section">
-            <h4>Recently Discovered Content</h4>
+            <h4>Live Content Discovery</h4>
             <div class="ai-content-list">
               <div class="ai-content-item">
                 <div class="ai-content-meta">
@@ -167,7 +227,7 @@
                 <div class="ai-content-title">AI for Smart Agriculture Initiative Launched</div>
                 <div class="ai-tags">
                   <span class="tag">Agriculture</span>
-                  <span class="tag">AI</span>
+                  <span class="tag">Artificial Intelligence</span>
                   <span class="tag">Innovation</span>
                 </div>
               </div>
@@ -178,11 +238,11 @@
                   <span class="ai-source">A*STAR Singapore</span>
                   <span class="ai-time">12 min ago</span>
                 </div>
-                <div class="ai-content-title">Quantum Computing Research Breakthrough</div>
+                <div class="ai-content-title">Quantum Computing Breakthrough in Materials Science</div>
                 <div class="ai-tags">
-                  <span class="tag">Quantum</span>
+                  <span class="tag">Quantum Computing</span>
+                  <span class="tag">Materials Science</span>
                   <span class="tag">Research</span>
-                  <span class="tag">Computing</span>
                 </div>
               </div>
               
@@ -195,7 +255,7 @@
                 <div class="ai-content-title">Marine Biodiversity Conservation Program</div>
                 <div class="ai-tags">
                   <span class="tag">Environment</span>
-                  <span class="tag">Marine</span>
+                  <span class="tag">Marine Biology</span>
                   <span class="tag">Conservation</span>
                 </div>
               </div>
@@ -203,30 +263,39 @@
           </div>
 
           <div class="ai-section">
-            <h4>Smart Insights</h4>
+            <h4>Smart Collaboration Insights</h4>
             <div class="ai-recommendations">
               <div class="ai-rec-item">
                 <div class="ai-rec-header">
                   <span class="ai-icon">🔗</span>
-                  <span>Collaboration Opportunity</span>
+                  <span>Partnership Opportunity</span>
                 </div>
                 <div class="ai-rec-content">
-                  Thailand's AI Agriculture project matches with Indonesia's Smart Farming initiative. 
-                  <strong>87% compatibility score</strong>
+                  Thailand's Smart Agriculture AI project shows <strong>87% compatibility</strong> with Indonesia's Precision Farming initiative. Potential for joint research and resource sharing.
                 </div>
-                <button class="btn-ai-action">Suggest Partnership</button>
+                <button class="btn-ai-action">Generate Partnership Brief</button>
               </div>
               
               <div class="ai-rec-item">
                 <div class="ai-rec-header">
                   <span class="ai-icon">📈</span>
-                  <span>Trending Topic</span>
+                  <span>Trending Research</span>
                 </div>
                 <div class="ai-rec-content">
-                  "Sustainable Energy" mentioned 43x across 6 countries this week. 
-                  <strong>Rising trend detected</strong>
+                  "Sustainable Energy" mentioned <strong>43 times</strong> across 6 countries this week. Emerging as priority research area.
                 </div>
                 <button class="btn-ai-action">View Trend Analysis</button>
+              </div>
+              
+              <div class="ai-rec-item">
+                <div class="ai-rec-header">
+                  <span class="ai-icon">💡</span>
+                  <span>Resource Matching</span>
+                </div>
+                <div class="ai-rec-content">
+                  NSCC Singapore's HPC resources align with 3 ongoing projects in Malaysia and Vietnam. Infrastructure sharing opportunity identified.
+                </div>
+                <button class="btn-ai-action">Contact Resource Manager</button>
               </div>
             </div>
           </div>
@@ -234,29 +303,33 @@
 
         <div class="ai-controls">
           <div class="ai-control-section">
-            <h4>Discovery Controls</h4>
+            <h4>Discovery Settings</h4>
             <div class="ai-toggle-group">
               <label class="ai-toggle">
                 <input type="checkbox" checked>
-                <span>Auto-categorization</span>
+                <span>Auto-categorization with NLP</span>
               </label>
               <label class="ai-toggle">
                 <input type="checkbox" checked>
-                <span>Duplicate detection</span>
+                <span>Duplicate content detection</span>
               </label>
               <label class="ai-toggle">
                 <input type="checkbox">
-                <span>Real-time alerts</span>
+                <span>Real-time collaboration alerts</span>
+              </label>
+              <label class="ai-toggle">
+                <input type="checkbox" checked>
+                <span>Cross-platform authentication</span>
               </label>
             </div>
           </div>
           
           <div class="ai-control-section">
-            <h4>Content Sources</h4>
+            <h4>Content Sources Status</h4>
             <div class="ai-source-list">
               <div class="ai-source-item">
                 <span class="ai-status online"></span>
-                <span>RSS Feeds (12 active)</span>
+                <span>RSS/Atom Feeds (12 active)</span>
               </div>
               <div class="ai-source-item">
                 <span class="ai-status online"></span>
@@ -264,7 +337,11 @@
               </div>
               <div class="ai-source-item">
                 <span class="ai-status degraded"></span>
-                <span>Web Scraping (3 active)</span>
+                <span>Web Crawlers (3 active)</span>
+              </div>
+              <div class="ai-source-item">
+                <span class="ai-status online"></span>
+                <span>Partner Integrations (5 active)</span>
               </div>
             </div>
           </div>
@@ -273,50 +350,910 @@
     </section>
   </div>
 
+  <!-- Research Visa Navigator -->
+  <div id="view-research-visa" class="view" style="display:none">
+    <section class="section">
+      <h3>ASEAN Research Visa Navigator</h3>
+      <div class="sub">Streamlining research mobility across ASEAN member countries</div>
+      
+      <div class="visa-dashboard">
+        <div class="visa-calculator">
+          <h4>Visa Requirements Calculator</h4>
+          <div class="calc-inputs">
+            <div class="input-group">
+              <label for="origin-country">Your Country:</label>
+              <select id="origin-country">
+                <option value="">Select origin country</option>
+                <option value="brunei">Brunei Darussalam</option>
+                <option value="cambodia">Cambodia</option>
+                <option value="indonesia">Indonesia</option>
+                <option value="laos">Lao PDR</option>
+                <option value="malaysia">Malaysia</option>
+                <option value="myanmar">Myanmar</option>
+                <option value="philippines">Philippines</option>
+                <option value="singapore">Singapore</option>
+                <option value="thailand">Thailand</option>
+                <option value="vietnam">Viet Nam</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="dest-country">Destination Country:</label>
+              <select id="dest-country">
+                <option value="">Select destination</option>
+                <option value="brunei">Brunei Darussalam</option>
+                <option value="cambodia">Cambodia</option>
+                <option value="indonesia">Indonesia</option>
+                <option value="laos">Lao PDR</option>
+                <option value="malaysia">Malaysia</option>
+                <option value="myanmar">Myanmar</option>
+                <option value="philippines">Philippines</option>
+                <option value="singapore">Singapore</option>
+                <option value="thailand">Thailand</option>
+                <option value="vietnam">Viet Nam</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="research-duration">Duration:</label>
+              <select id="research-duration">
+                <option value="short">Short-term (< 3 months)</option>
+                <option value="medium">Medium-term (3-12 months)</option>
+                <option value="long">Long-term (> 12 months)</option>
+              </select>
+            </div>
+            <button class="btn primary" id="calculate-visa">Calculate Requirements</button>
+          </div>
+        </div>
+
+        <div class="visa-results" id="visa-results" style="display:none">
+          <h4>Visa Requirements Summary</h4>
+          <div class="visa-info">
+            <div class="visa-requirement">
+              <h5>Visa Type Required:</h5>
+              <span class="visa-type">Research/Academic Visa</span>
+            </div>
+            <div class="visa-requirement">
+              <h5>Processing Time:</h5>
+              <span class="processing-time">15-30 business days</span>
+            </div>
+            <div class="visa-requirement">
+              <h5>Application Fee:</h5>
+              <span class="visa-fee">$50 USD</span>
+            </div>
+          </div>
+          
+          <div class="document-checklist">
+            <h5>Required Documents:</h5>
+            <ul>
+              <li>✓ Valid passport (minimum 6 months validity)</li>
+              <li>✓ Research invitation letter from host institution</li>
+              <li>✓ Academic credentials and CV</li>
+              <li>✓ Financial proof or sponsorship letter</li>
+              <li>✓ Health insurance coverage</li>
+              <li>✓ Police clearance certificate</li>
+            </ul>
+          </div>
+          
+          <div class="embassy-contact">
+            <h5>Embassy Contact Information:</h5>
+            <div class="contact-info">
+              <p><strong>Address:</strong> Embassy contact details will be displayed here</p>
+              <p><strong>Phone:</strong> +XX-X-XXXX-XXXX</p>
+              <p><strong>Email:</strong> consular@embassy.gov</p>
+              <button class="btn" id="book-appointment">Book Appointment Online</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="visa-matrix">
+          <h4>ASEAN Research Visa Matrix</h4>
+          <div class="matrix-info">
+            <p>Interactive matrix showing visa requirements between all ASEAN countries for research purposes.</p>
+            <table class="visa-table">
+              <thead>
+                <tr>
+                  <th>From/To</th>
+                  <th>🇧🇳 BN</th>
+                  <th>🇰🇭 KH</th>
+                  <th>🇮🇩 ID</th>
+                  <th>🇱🇦 LA</th>
+                  <th>🇲🇾 MY</th>
+                  <th>🇲🇲 MM</th>
+                  <th>🇵🇭 PH</th>
+                  <th>🇸🇬 SG</th>
+                  <th>🇹🇭 TH</th>
+                  <th>🇻🇳 VN</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>🇧🇳 Brunei</td>
+                  <td class="visa-free">-</td>
+                  <td class="visa-required">Visa</td>
+                  <td class="visa-free">Free</td>
+                  <td class="visa-required">Visa</td>
+                  <td class="visa-free">Free</td>
+                  <td class="visa-required">Visa</td>
+                  <td class="visa-free">Free</td>
+                  <td class="visa-free">Free</td>
+                  <td class="visa-free">Free</td>
+                  <td class="visa-required">Visa</td>
+                </tr>
+                <!-- Additional rows would be populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Conference & Events Aggregator -->
+  <div id="view-events" class="view" style="display:none">
+    <section class="section">
+      <h3>ASEAN Conference & Event Aggregator</h3>
+      <div class="sub">Centralized discovery of STI conferences, workshops, and funding opportunities</div>
+      
+      <div class="events-dashboard">
+        <div class="events-filters">
+          <div class="filter-group">
+            <label for="event-type">Event Type:</label>
+            <select id="event-type">
+              <option value="">All Event Types</option>
+              <option value="conference">Conferences</option>
+              <option value="workshop">Workshops</option>
+              <option value="seminar">Seminars</option>
+              <option value="funding">Funding Calls</option>
+              <option value="fellowship">Fellowships</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="event-field">Research Field:</label>
+            <select id="event-field">
+              <option value="">All Fields</option>
+              <option value="technology">Technology & Engineering</option>
+              <option value="biotech">Biotechnology</option>
+              <option value="environment">Environment & Climate</option>
+              <option value="health">Health Sciences</option>
+              <option value="space">Space Technology</option>
+              <option value="ai">Artificial Intelligence</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="event-timeline">Timeline:</label>
+            <select id="event-timeline">
+              <option value="">All Upcoming</option>
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+              <option value="quarter">Next 3 Months</option>
+              <option value="year">This Year</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="events-stats">
+          <div class="event-stat-card">
+            <div class="event-stat-number">47</div>
+            <div class="event-stat-label">Upcoming Events</div>
+          </div>
+          <div class="event-stat-card">
+            <div class="event-stat-number">12</div>
+            <div class="event-stat-label">Open Call for Papers</div>
+          </div>
+          <div class="event-stat-card">
+            <div class="event-stat-number">8</div>
+            <div class="event-stat-label">Funding Opportunities</div>
+          </div>
+          <div class="event-stat-card">
+            <div class="event-stat-number">156</div>
+            <div class="event-stat-label">Registered Users</div>
+          </div>
+        </div>
+
+        <div class="events-grid">
+          <div class="event-card urgent">
+            <div class="event-header">
+              <div class="event-type">Conference</div>
+              <div class="event-deadline">Deadline: 7 days</div>
+            </div>
+            <h4>ASEAN Smart Cities Innovation Summit 2025</h4>
+            <div class="event-details">
+              <div class="event-location">📍 Singapore</div>
+              <div class="event-date">📅 March 15-17, 2025</div>
+            </div>
+            <div class="event-description">
+              International conference on urban technology solutions and smart city innovations across ASEAN region.
+            </div>
+            <div class="event-tags">
+              <span class="tag">Smart Cities</span>
+              <span class="tag">Urban Tech</span>
+              <span class="tag">Innovation</span>
+            </div>
+            <div class="event-actions">
+              <button class="btn">View Details</button>
+              <button class="btn primary">Submit Abstract</button>
+            </div>
+          </div>
+
+          <div class="event-card">
+            <div class="event-header">
+              <div class="event-type">Funding</div>
+              <div class="event-deadline">Deadline: 21 days</div>
+            </div>
+            <h4>ASEAN-Japan Research Collaboration Grant</h4>
+            <div class="event-details">
+              <div class="event-location">📍 Regional</div>
+              <div class="event-date">💰 Up to $100,000</div>
+            </div>
+            <div class="event-description">
+              Joint funding opportunity for collaborative research projects between ASEAN and Japanese institutions.
+            </div>
+            <div class="event-tags">
+              <span class="tag">Funding</span>
+              <span class="tag">Collaboration</span>
+              <span class="tag">Research</span>
+            </div>
+            <div class="event-actions">
+              <button class="btn">View Guidelines</button>
+              <button class="btn primary">Apply Now</button>
+            </div>
+          </div>
+
+          <div class="event-card">
+            <div class="event-header">
+              <div class="event-type">Workshop</div>
+              <div class="event-deadline">Registration Open</div>
+            </div>
+            <h4>ASEAN Quantum Computing Workshop</h4>
+            <div class="event-details">
+              <div class="event-location">📍 Kuala Lumpur, Malaysia</div>
+              <div class="event-date">📅 February 28 - March 2, 2025</div>
+            </div>
+            <div class="event-description">
+              Hands-on workshop on quantum computing applications in Southeast Asian research contexts.
+            </div>
+            <div class="event-tags">
+              <span class="tag">Quantum Computing</span>
+              <span class="tag">Workshop</span>
+              <span class="tag">Training</span>
+            </div>
+            <div class="event-actions">
+              <button class="btn">View Program</button>
+              <button class="btn primary">Register</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="email-subscription">
+          <h4>Stay Updated</h4>
+          <p>Get weekly digest of conferences, funding calls, and research opportunities in your field.</p>
+          <div class="subscription-form">
+            <input type="email" placeholder="Enter your email address" id="digest-email">
+            <select id="digest-interests">
+              <option value="">Select your research interests</option>
+              <option value="ai">Artificial Intelligence</option>
+              <option value="biotech">Biotechnology</option>
+              <option value="environment">Environmental Science</option>
+              <option value="health">Health Sciences</option>
+              <option value="space">Space Technology</option>
+            </select>
+            <button class="btn primary" id="subscribe-digest">Subscribe to Weekly Digest</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- University Contacts View -->
+  <div id="view-university-contacts" class="view" style="display:none">
+    <section class="section">
+      <h3>ASEAN Research Institution Directory</h3>
+      <div class="sub">Comprehensive database of universities and research centers across ASEAN</div>
+      
+      <div class="university-dashboard">
+        <div class="university-filters">
+          <div class="filter-group">
+            <label for="uni-country">Country:</label>
+            <select id="uni-country">
+              <option value="">All ASEAN Countries</option>
+              <option value="brunei">🇧🇳 Brunei Darussalam</option>
+              <option value="cambodia">🇰🇭 Cambodia</option>
+              <option value="indonesia">🇮🇩 Indonesia</option>
+              <option value="laos">🇱🇦 Lao PDR</option>
+              <option value="malaysia">🇲🇾 Malaysia</option>
+              <option value="myanmar">🇲🇲 Myanmar</option>
+              <option value="philippines">🇵🇭 Philippines</option>
+              <option value="singapore">🇸🇬 Singapore</option>
+              <option value="thailand">🇹🇭 Thailand</option>
+              <option value="vietnam">🇻🇳 Viet Nam</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="uni-type">Institution Type:</label>
+            <select id="uni-type">
+              <option value="">All Types</option>
+              <option value="university">Public Universities</option>
+              <option value="private">Private Universities</option>
+              <option value="research">Research Centers</option>
+              <option value="government">Government Research</option>
+              <option value="institute">Technical Institutes</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="uni-field">Research Focus:</label>
+            <select id="uni-field">
+              <option value="">All Fields</option>
+              <option value="technology">Technology & Engineering</option>
+              <option value="science">Natural Sciences</option>
+              <option value="health">Health & Medicine</option>
+              <option value="environment">Environment & Sustainability</option>
+              <option value="agriculture">Agriculture & Food Science</option>
+              <option value="social">Social Sciences</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="university-stats">
+          <div class="uni-stat-card">
+            <div class="uni-stat-number">156</div>
+            <div class="uni-stat-label">Universities</div>
+          </div>
+          <div class="uni-stat-card">
+            <div class="uni-stat-number">89</div>
+            <div class="uni-stat-label">Research Centers</div>
+          </div>
+          <div class="uni-stat-card">
+            <div class="uni-stat-number">234</div>
+            <div class="uni-stat-label">Active Collaborations</div>
+          </div>
+          <div class="uni-stat-card">
+            <div class="uni-stat-number">10</div>
+            <div class="uni-stat-label">Member Countries</div>
+          </div>
+        </div>
+
+        <div class="university-grid">
+          <div class="university-card featured">
+            <div class="uni-flag">🇹🇭</div>
+            <div class="uni-info">
+              <h4>Chulalongkorn University</h4>
+              <div class="uni-details">
+                <div class="uni-country">Thailand</div>
+                <div class="uni-type">Public University • Est. 1917</div>
+              </div>
+              <div class="uni-contact">
+                <div><strong>International Office:</strong> intl@chula.ac.th</div>
+                <div><strong>Research Office:</strong> +66-2-218-3977</div>
+                <div><strong>Website:</strong> <a href="https://www.chula.ac.th" target="_blank">www.chula.ac.th</a></div>
+              </div>
+              <div class="uni-specialties">
+                <span class="specialty-tag">Engineering</span>
+                <span class="specialty-tag">Medicine</span>
+                <span class="specialty-tag">AI & Technology</span>
+                <span class="specialty-tag">Sustainability</span>
+              </div>
+              <div class="uni-actions">
+                <button class="btn">View Profile</button>
+                <button class="btn primary">Contact</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="university-card">
+            <div class="uni-flag">🇸🇬</div>
+            <div class="uni-info">
+              <h4>National University of Singapore</h4>
+              <div class="uni-details">
+                <div class="uni-country">Singapore</div>
+                <div class="uni-type">Public University • Est. 1905</div>
+              </div>
+              <div class="uni-contact">
+                <div><strong>Research Office:</strong> research@nus.edu.sg</div>
+                <div><strong>Phone:</strong> +65-6516-2225</div>
+                <div><strong>Website:</strong> <a href="https://www.nus.edu.sg" target="_blank">www.nus.edu.sg</a></div>
+              </div>
+              <div class="uni-specialties">
+                <span class="specialty-tag">AI & Computing</span>
+                <span class="specialty-tag">Biomedical</span>
+                <span class="specialty-tag">Sustainability</span>
+                <span class="specialty-tag">Business</span>
+              </div>
+              <div class="uni-actions">
+                <button class="btn">View Profile</button>
+                <button class="btn primary">Contact</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="university-card">
+            <div class="uni-flag">🇲🇾</div>
+            <div class="uni-info">
+              <h4>University of Malaya</h4>
+              <div class="uni-details">
+                <div class="uni-country">Malaysia</div>
+                <div class="uni-type">Public University • Est. 1949</div>
+              </div>
+              <div class="uni-contact">
+                <div><strong>International:</strong> international@um.edu.my</div>
+                <div><strong>Research Office:</strong> +60-3-7967-3267</div>
+                <div><strong>Website:</strong> <a href="https://www.um.edu.my" target="_blank">www.um.edu.my</a></div>
+              </div>
+              <div class="uni-specialties">
+                <span class="specialty-tag">Social Sciences</span>
+                <span class="specialty-tag">Engineering</span>
+                <span class="specialty-tag">Medicine</span>
+                <span class="specialty-tag">Islamic Studies</span>
+              </div>
+              <div class="uni-actions">
+                <button class="btn">View Profile</button>
+                <button class="btn primary">Contact</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="university-card">
+            <div class="uni-flag">🇮🇩</div>
+            <div class="uni-info">
+              <h4>University of Indonesia</h4>
+              <div class="uni-details">
+                <div class="uni-country">Indonesia</div>
+                <div class="uni-type">Public University • Est. 1849</div>
+              </div>
+              <div class="uni-contact">
+                <div><strong>International:</strong> international@ui.ac.id</div>
+                <div><strong>Research Office:</strong> +62-21-7863-555</div>
+                <div><strong>Website:</strong> <a href="https://www.ui.ac.id" target="_blank">www.ui.ac.id</a></div>
+              </div>
+              <div class="uni-specialties">
+                <span class="specialty-tag">Public Health</span>
+                <span class="specialty-tag">Economics</span>
+                <span class="specialty-tag">Technology</span>
+                <span class="specialty-tag">Law</span>
+              </div>
+              <div class="uni-actions">
+                <button class="btn">View Profile</button>
+                <button class="btn primary">Contact</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="university-card">
+            <div class="uni-flag">🇻🇳</div>
+            <div class="uni-info">
+              <h4>Vietnam National University</h4>
+              <div class="uni-details">
+                <div class="uni-country">Viet Nam</div>
+                <div class="uni-type">National University • Est. 1906</div>
+              </div>
+              <div class="uni-contact">
+                <div><strong>International:</strong> iro@vnu.edu.vn</div>
+                <div><strong>Research Office:</strong> +84-24-3754-7506</div>
+                <div><strong>Website:</strong> <a href="https://www.vnu.edu.vn" target="_blank">www.vnu.edu.vn</a></div>
+              </div>
+              <div class="uni-specialties">
+                <span class="specialty-tag">Agriculture</span>
+                <span class="specialty-tag">Environment</span>
+                <span class="specialty-tag">Technology</span>
+                <span class="specialty-tag">Social Sciences</span>
+              </div>
+              <div class="uni-actions">
+                <button class="btn">View Profile</button>
+                <button class="btn primary">Contact</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="university-card">
+            <div class="uni-flag">🇵🇭</div>
+            <div class="uni-info">
+              <h4>University of the Philippines</h4>
+              <div class="uni-details">
+                <div class="uni-country">Philippines</div>
+                <div class="uni-type">State University • Est. 1908</div>
+              </div>
+              <div class="uni-contact">
+                <div><strong>Research Office:</strong> ovcri@up.edu.ph</div>
+                <div><strong>Phone:</strong> +63-2-8981-8500</div>
+                <div><strong>Website:</strong> <a href="https://www.up.edu.ph" target="_blank">www.up.edu.ph</a></div>
+              </div>
+              <div class="uni-specialties">
+                <span class="specialty-tag">Marine Science</span>
+                <span class="specialty-tag">Renewable Energy</span>
+                <span class="specialty-tag">Health Sciences</span>
+                <span class="specialty-tag">Agriculture</span>
+              </div>
+              <div class="uni-actions">
+                <button class="btn">View Profile</button>
+                <button class="btn primary">Contact</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="collaboration-showcase">
+          <h4>Featured Regional Collaborations</h4>
+          <div class="collaboration-grid">
+            <div class="collab-item">
+              <div class="collab-title">ASEAN Smart Cities Research Network</div>
+              <div class="collab-partners">
+                <span class="partner-tag">NUS Singapore</span>
+                <span class="partner-tag">Chula Thailand</span>
+                <span class="partner-tag">UI Indonesia</span>
+                <span class="partner-tag">UM Malaysia</span>
+              </div>
+              <div class="collab-focus">Urban Technology & Sustainable Development</div>
+              <div class="collab-funding">💰 $2.5M Joint Research Grant</div>
+            </div>
+            
+            <div class="collab-item">
+              <div class="collab-title">ASEAN Health Innovation Initiative</div>
+              <div class="collab-partners">
+                <span class="partner-tag">UM Malaysia</span>
+                <span class="partner-tag">VNU Vietnam</span>
+                <span class="partner-tag">UP Philippines</span>
+                <span class="partner-tag">UBD Brunei</span>
+              </div>
+              <div class="collab-focus">Tropical Medicine & Digital Health</div>
+              <div class="collab-funding">💰 $1.8M Research Consortium</div>
+            </div>
+            
+            <div class="collab-item">
+              <div class="collab-title">ASEAN Climate Change Research Alliance</div>
+              <div class="collab-partners">
+                <span class="partner-tag">All 10 Countries</span>
+              </div>
+              <div class="collab-focus">Climate Adaptation & Mitigation Strategies</div>
+              <div class="collab-funding">💰 $5M Regional Program</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Admin Console View -->
   <div id="view-admin" class="view" style="display:none">
     <section class="section">
-      <h3>Admin Console (mock)</h3>
-      <div class="row">
-        <div class="kpi"><div class="sub">Submissions pending</div><div class="kpi-num">3</div></div>
-        <div class="kpi"><div class="sub">Link errors (24h)</div><div class="kpi-num bad">2</div></div>
-        <div class="kpi"><div class="sub">Metadata completeness</div><div class="kpi-num">84%</div></div>
+      <h3>Administrator Dashboard</h3>
+      <div class="sub">System management and content moderation tools</div>
+      
+      <div class="admin-dashboard">
+        <div class="admin-stats-grid">
+          <div class="admin-stat-card">
+            <div class="stat-header">
+              <span class="stat-icon">📊</span>
+              <h4>Platform Health</h4>
+            </div>
+            <div class="stat-details">
+              <div class="kpi"><div class="sub">Online platforms</div><div class="kpi-num">23</div></div>
+              <div class="kpi"><div class="sub">Degraded services</div><div class="kpi-num warn">2</div></div>
+              <div class="kpi"><div class="sub">Offline platforms</div><div class="kpi-num bad">1</div></div>
+            </div>
+          </div>
+
+          <div class="admin-stat-card">
+            <div class="stat-header">
+              <span class="stat-icon">⏳</span>
+              <h4>Content Moderation</h4>
+            </div>
+            <div class="stat-details">
+              <div class="kpi"><div class="sub">Pending submissions</div><div class="kpi-num warn">7</div></div>
+              <div class="kpi"><div class="sub">Flagged content</div><div class="kpi-num bad">3</div></div>
+              <div class="kpi"><div class="sub">Approved today</div><div class="kpi-num">12</div></div>
+            </div>
+          </div>
+
+          <div class="admin-stat-card">
+            <div class="stat-header">
+              <span class="stat-icon">👥</span>
+              <h4>User Management</h4>
+            </div>
+            <div class="stat-details">
+              <div class="kpi"><div class="sub">Active users (7d)</div><div class="kpi-num">1,247</div></div>
+              <div class="kpi"><div class="sub">New registrations</div><div class="kpi-num">23</div></div>
+              <div class="kpi"><div class="sub">Pending approvals</div><div class="kpi-num warn">5</div></div>
+            </div>
+          </div>
+
+          <div class="admin-stat-card">
+            <div class="stat-header">
+              <span class="stat-icon">🔧</span>
+              <h4>System Performance</h4>
+            </div>
+            <div class="stat-details">
+              <div class="kpi"><div class="sub">API response time</div><div class="kpi-num">245ms</div></div>
+              <div class="kpi"><div class="sub">Data freshness</div><div class="kpi-num">94%</div></div>
+              <div class="kpi"><div class="sub">Uptime (30d)</div><div class="kpi-num">99.7%</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-actions">
+          <div class="admin-section">
+            <h4>Quick Actions</h4>
+            <div class="action-buttons">
+              <button class="btn primary">Review Pending Submissions</button>
+              <button class="btn">Manage User Permissions</button>
+              <button class="btn">Update Platform Status</button>
+              <button class="btn">Generate Reports</button>
+              <button class="btn">System Health Check</button>
+              <button class="btn">Export Analytics</button>
+            </div>
+          </div>
+
+          <div class="admin-section">
+            <h4>Content Management</h4>
+            <div class="admin-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Submission</th>
+                    <th>Type</th>
+                    <th>Country</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ASEAN Blockchain Initiative</td>
+                    <td>Platform</td>
+                    <td>Singapore</td>
+                    <td><span class="status-badge pending">Pending Review</span></td>
+                    <td>
+                      <button class="btn btn-sm">Review</button>
+                      <button class="btn btn-sm primary">Approve</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Green Tech Innovation Hub</td>
+                    <td>Platform</td>
+                    <td>Thailand</td>
+                    <td><span class="status-badge pending">Pending Review</span></td>
+                    <td>
+                      <button class="btn btn-sm">Review</button>
+                      <button class="btn btn-sm primary">Approve</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ASEAN AI Ethics Guidelines</td>
+                    <td>Content</td>
+                    <td>Malaysia</td>
+                    <td><span class="status-badge flagged">Flagged</span></td>
+                    <td>
+                      <button class="btn btn-sm">Investigate</button>
+                      <button class="btn btn-sm">Contact Author</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="admin-section">
+            <h4>System Configuration</h4>
+            <div class="config-options">
+              <div class="config-item">
+                <label class="config-label">
+                  <input type="checkbox" checked>
+                  <span>Auto-approve submissions from verified institutions</span>
+                </label>
+              </div>
+              <div class="config-item">
+                <label class="config-label">
+                  <input type="checkbox" checked>
+                  <span>Enable real-time platform health monitoring</span>
+                </label>
+              </div>
+              <div class="config-item">
+                <label class="config-label">
+                  <input type="checkbox">
+                  <span>Send daily digest to country coordinators</span>
+                </label>
+              </div>
+              <div class="config-item">
+                <label class="config-label">
+                  <input type="checkbox" checked>
+                  <span>Enable AI-powered content categorization</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <ul>
-        <li>Approve/Reject new platform submissions</li>
-        <li>Re-index search, manage categories & tags</li>
-        <li>Set link-health schedule & thresholds</li>
-      </ul>
     </section>
   </div>
 </main>
 
-<!-- Drawer: Platform Profile (example) -->
+<!-- Enhanced Platform Profile Drawer -->
 <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
   <div class="panel">
-    <div class="row" style="justify-content:space-between;align-items:center">
-      <h3 id="profileTitle">ASEAN STI Hub (Example Profile)</h3>
-      <button class="btn" id="close-drawer" aria-label="Close">Close</button>
+    <div class="panel-header">
+      <h3 id="profileTitle">ASEAN STI Platform Profile</h3>
+      <button class="btn btn-icon" id="close-drawer" aria-label="Close">✕</button>
     </div>
-    <div class="meta">Country: Thailand • Category: Research, Data Catalog • Status: <span class="status s-ok">Online</span></div>
-    <p>Regional hub for science, technology and innovation content. Deep links to news, events, and API docs.</p>
-    <div class="row">
-      <div class="kpi"><div class="sub">Last checked</div><div style="font-weight:700">2025-09-19 09:00</div></div>
-      <div class="kpi"><div class="sub">30-day clicks</div><div style="font-weight:700">1,264</div></div>
-      <div class="kpi"><div class="sub">Feeds</div><div style="font-weight:700">News, Events</div></div>
+    
+    <div class="profile-content">
+      <div class="profile-status">
+        <span class="status s-ok">Online</span>
+        <div class="profile-meta">
+          <span>Last updated: 2 hours ago</span>
+          <span>•</span>
+          <span>Verified platform</span>
+        </div>
+      </div>
+
+      <div class="profile-description">
+        <p>Comprehensive regional hub for science, technology and innovation resources, featuring intelligent content aggregation, collaboration matching, and cross-platform search capabilities.</p>
+      </div>
+
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="stat-number">1,264</div>
+          <div class="stat-label">Monthly visits</div>
+        </div>
+        <div class="profile-stat">
+          <div class="stat-number">47</div>
+          <div class="stat-label">Connected platforms</div>
+        </div>
+        <div class="profile-stat">
+          <div class="stat-number">156</div>
+          <div class="stat-label">Active researchers</div>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <h4>Platform Details</h4>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <strong>Country:</strong> Regional (ASEAN-wide)
+          </div>
+          <div class="detail-item">
+            <strong>Categories:</strong> Research Hub, Data Aggregation, Network
+          </div>
+          <div class="detail-item">
+            <strong>Languages:</strong> English, Thai, Bahasa Indonesia
+          </div>
+          <div class="detail-item">
+            <strong>Access Level:</strong> Public + Authenticated Users
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <h4>Available Services</h4>
+        <ul class="service-list">
+          <li>🔍 Cross-platform content search</li>
+          <li>🤝 Smart collaboration matching</li>
+          <li>📊 Research analytics dashboard</li>
+          <li>🔔 Real-time research alerts</li>
+          <li>📱 Mobile API access</li>
+          <li>🔐 Single sign-on integration</li>
+        </ul>
+      </div>
+
+      <div class="profile-section">
+        <h4>Quick Links</h4>
+        <div class="quick-links">
+          <a href="#" class="quick-link">
+            <span class="link-icon">🌐</span>
+            <span>Main Website</span>
+          </a>
+          <a href="#" class="quick-link">
+            <span class="link-icon">📋</span>
+            <span>API Documentation</span>
+          </a>
+          <a href="#" class="quick-link">
+            <span class="link-icon">📧</span>
+            <span>Contact Support</span>
+          </a>
+          <a href="#" class="quick-link">
+            <span class="link-icon">📈</span>
+            <span>Usage Analytics</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button class="btn primary">Visit Platform</button>
+        <button class="btn">Add to Favorites</button>
+        <button class="btn">Share</button>
+      </div>
     </div>
-    <h4>Deep Links</h4>
-    <ul>
-      <li><a href="#" aria-label="Open site" onclick="event.preventDefault()">Main website</a></li>
-      <li><a href="#" onclick="event.preventDefault()">News feed (JSON)</a></li>
-      <li><a href="#" onclick="event.preventDefault()">Events (ICS)</a></li>
-      <li><a href="#" onclick="event.preventDefault()">API docs</a></li>
-    </ul>
   </div>
 </div>
 
-<!-- Leaflet JS -->
+<!-- User Authentication Modal -->
+<div class="modal" id="auth-modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Sign In to ASEAN STI Gateway</h3>
+      <button class="btn btn-icon" id="close-auth">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="auth-options">
+        <button class="btn auth-btn">
+          <span class="auth-icon">🏛️</span>
+          <span>Sign in with Institution Account</span>
+        </button>
+        <button class="btn auth-btn">
+          <span class="auth-icon">🔬</span>
+          <span>ORCID Research ID</span>
+        </button>
+        <button class="btn auth-btn">
+          <span class="auth-icon">🌐</span>
+          <span>Google Account</span>
+        </button>
+      </div>
+      <div class="auth-divider">or</div>
+      <form class="auth-form">
+        <input type="email" placeholder="Email address" required>
+        <input type="password" placeholder="Password" required>
+        <button type="submit" class="btn primary">Sign In</button>
+      </form>
+      <div class="auth-footer">
+        <a href="#">Create new account</a>
+        <span>•</span>
+        <a href="#">Forgot password?</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- Loading Indicator -->
+<div class="loading-overlay" id="loading-overlay" style="display: none;">
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading ASEAN STI data...</div>
+  </div>
+</div>
+
+<!-- Scripts -->
 <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<!-- App JS -->
 <script src="app.js" defer></script>
+<script>
+// Quick test script
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, testing tabs...');
+    
+    // Manual tab switching for testing
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            console.log('Tab clicked:', this.dataset.tab);
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Hide all views
+            document.querySelectorAll('.view').forEach(view => {
+                view.style.display = 'none';
+            });
+            
+            // Show selected view
+            const viewId = 'view-' + this.dataset.tab;
+            const targetView = document.getElementById(viewId);
+            console.log('Looking for view:', viewId, 'Found:', !!targetView);
+            
+            if (targetView) {
+                targetView.style.display = 'block';
+                console.log('View shown:', viewId);
+            } else {
+                console.error('View not found:', viewId);
+                // List all available views
+                const allViews = document.querySelectorAll('[id^="view-"]');
+                console.log('Available views:', Array.from(allViews).map(v => v.id));
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
